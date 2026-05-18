@@ -341,3 +341,128 @@ tr:last-child td { border-bottom: 0; }
     font-size: 18px;
   }
 }
+@media (max-width: 768px) {
+  html {
+    font-size: 18px;
+  }
+
+  body {
+    font-size: 18px;
+    overflow-x: hidden;
+  }
+
+  .header {
+    position: relative;
+    padding: 20px 18px;
+  }
+
+  .header-inner {
+    width: 100%;
+  }
+
+  .logo {
+    font-size: 2rem;
+  }
+
+  .logo-mark {
+    width: 42px;
+    height: 42px;
+  }
+
+  .header-copy {
+    font-size: 1rem;
+  }
+
+  .container {
+    max-width: 100%;
+    padding: 18px 14px 90px;
+  }
+
+  .tabs {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    gap: 10px;
+    padding: 12px 0 18px;
+  }
+
+  .tab-button {
+    font-size: 1rem;
+    padding: 13px 18px;
+  }
+
+  .card {
+    padding: 24px 20px;
+    border-radius: 20px;
+    margin-bottom: 22px;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.65rem;
+  }
+
+  h3 {
+    font-size: 1.35rem;
+  }
+
+  p,
+  .lead,
+  .small {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .grid,
+  .grid-2,
+  .grid-3,
+  .grid-4 {
+    grid-template-columns: 1fr !important;
+  }
+
+  .stat {
+    padding: 20px;
+  }
+
+  .btn {
+    width: 100%;
+    min-height: 52px;
+    font-size: 1rem;
+  }
+
+  input,
+  select,
+  textarea {
+    min-height: 54px;
+    font-size: 1rem;
+  }
+
+  .table-wrap {
+    overflow-x: auto;
+  }
+
+  table {
+    min-width: 720px;
+  }
+
+  .match-card {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .team.home,
+  .team.away {
+    text-align: center;
+  }
+
+  .score-input {
+    width: 100%;
+    height: 54px;
+  }
+
+  .versus {
+    display: none;
+  }
+}
