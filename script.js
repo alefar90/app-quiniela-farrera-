@@ -1,7 +1,7 @@
 const API_URL = "https://quiniela-api.alefar90.workers.dev";
 
 const { useEffect, useMemo, useState } = React;
-const ADMIN_PASSWORD = "V1n0t1nt0*";
+const ADMIN_PASSWORD = "";
 const ADMIN_WHATSAPP_NUMBER = "17863120172";
 
 const WORLD_CUP_GROUPS = {
