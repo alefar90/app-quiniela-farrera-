@@ -981,17 +981,29 @@ function RankingTab({ participants, realResults }) {
 function AdminLogin({ onLogin }) {
   const [password, setPassword] = useState("");
 
-  function submit(event) {
-    event.preventDefault();
+  async function submit(event) {
+  event.preventDefault();
 
-    if (password !== ADMIN_PASSWORD) {
+  try {
+    const response = await fetch(`${API_URL}/admin/check`, {
+      method: "GET",
+      headers: {
+        "x-admin-token": password
+      }
+    });
+
+    if (!response.ok) {
       alert("Contraseña incorrecta.");
       return;
     }
 
-    sessionStorage.setItem(STORAGE_KEYS.adminSession, "true");
+    sessionStorage.setItem(STORAGE_KEYS.adminSession, password);
     onLogin(true);
+  } catch (error) {
+    console.error("Error validando admin:", error);
+    alert("No se pudo validar el acceso admin.");
   }
+}
 
   return /*#__PURE__*/(
     React.createElement("section", { className: "card" }, /*#__PURE__*/
