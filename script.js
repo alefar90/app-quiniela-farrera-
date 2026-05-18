@@ -1009,7 +1009,7 @@ function AdminLogin({ onLogin }) {
     React.createElement("section", { className: "card" }, /*#__PURE__*/
     React.createElement("h2", null, "Login de administrador"), /*#__PURE__*/
 
-    React.createElement("p", { className: "code-note" }, "// Seguridad solo para prototipo. En producci\xF3n debe usarse autenticaci\xF3n real, autorizaci\xF3n por roles y backend seguro."), /*#__PURE__*/
+    React.createElement("p", { className: "code-note" }, "// Acceso privado para Alexander Farrera. Ingresa la clave administrativa para gestionar participantes, pronósticos, resultados y ranking.. En producci\xF3n debe usarse autenticaci\xF3n real, autorizaci\xF3n por roles y backend seguro."), /*#__PURE__*/
 
 
 
