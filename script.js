@@ -1,5 +1,6 @@
-const { useEffect, useMemo, useState } = React;
+const API_URL = "https://quiniela-api.alefar90.workers.dev";
 
+const { useEffect, useMemo, useState } = React;
 const ADMIN_PASSWORD = "V1n0t1nt0*";
 const ADMIN_WHATSAPP_NUMBER = "17863120172";
 
@@ -123,6 +124,17 @@ function loadFromStorage(key, fallback) {
 function saveToStorage(key, value) {
   localStorage.setItem(key, JSON.stringify(value));
   // Aquí luego se conectaría Supabase/Firebase para persistencia real multiusuario.
+}
+async function saveParticipantToAPI(participant) {
+  const response = await fetch(`${API_URL}/participants/create`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(participant)
+  });
+
+  return response.json();
 }
 
 function getBrowserTimeZone() {
@@ -582,6 +594,7 @@ function RegistrationTab({
     [...participants, participant];
 
     setParticipants(updatedParticipants);
+saveParticipantToAPI(participant);
     setCurrentParticipantId(participant.id);
     localStorage.setItem(STORAGE_KEYS.currentParticipantId, participant.id);
 
@@ -1317,8 +1330,7 @@ function AdminTab({ participants, realResults, setRealResults }) {
 
 function App() {
   const [activeTab, setActiveTab] = useState("Inicio");
-  const [participants, setParticipants] = useState(() =>
-  loadFromStorage(STORAGE_KEYS.participants, []));
+const [participants, setParticipants] = useState([]);
 
   const [realResults, setRealResults] = useState(() => ({
     ...createEmptyResults(),
@@ -1328,8 +1340,19 @@ function App() {
   () => localStorage.getItem(STORAGE_KEYS.currentParticipantId) || "");
 
 
-  useEffect(() => saveToStorage(STORAGE_KEYS.participants, participants), [participants]);
-  useEffect(() => saveToStorage(STORAGE_KEYS.realResults, realResults), [realResults]);
+useEffect(() => {
+  async function loadParticipants() {
+    try {
+      const response = await fetch(`${API_URL}/participants`);
+      const data = await response.json();
+      setParticipants(data);
+    } catch (error) {
+      console.error("Error cargando participantes:", error);
+    }
+  }
+
+  loadParticipants();
+}, []);  useEffect(() => saveToStorage(STORAGE_KEYS.realResults, realResults), [realResults]);
 
   return /*#__PURE__*/(
     React.createElement("div", { className: "app-shell" }, /*#__PURE__*/
