@@ -445,7 +445,7 @@ function HomeTab({ setActiveTab }) {
   return /*#__PURE__*/(
     React.createElement("section", { className: "grid" }, /*#__PURE__*/
     React.createElement("div", { className: "card" }, /*#__PURE__*/
-    React.createElement("h1", null, "Bienvenida a la Quiniela Farrera"), /*#__PURE__*/
+    React.createElement("h1", null, "Bienvenido a la Quiniela Farrera"), /*#__PURE__*/
     React.createElement("p", { className: "lead" }, "Participa en la Quiniela Farrera del Mundial 2026. Reg\xEDstrate, revisa el calendario, llena tus pron\xF3sticos y env\xEDalos oficialmente cuando est\xE9s seguro."), /*#__PURE__*/
 
 
