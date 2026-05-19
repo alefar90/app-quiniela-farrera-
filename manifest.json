@@ -1,12 +1,10 @@
 {
   "name": "Quiniela Farrera",
   "short_name": "Quiniela",
-  "description": "Quiniela Farrera del Mundial 2026",
   "start_url": "/",
-  "scope": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#0b3d91",
+  "background_color": "#0b2c7d",
+  "theme_color": "#0b2c7d",
   "icons": [
     {
       "src": "icon-192.png",
