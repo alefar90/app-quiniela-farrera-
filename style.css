@@ -84,15 +84,17 @@ button:disabled {
 }
 
 .logo-mark {
-  width: 46px;
-  height: 46px;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  background: var(--white);
-  color: var(--red);
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.22);
-  flex: 0 0 auto;
+  width: 76px;
+  height: 76px;
+  border-radius: 0;
+  display: block;
+  background-image: url("icon-192.png");
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  box-shadow: none;
+  flex: 0 0 76px;
+  font-size: 0;
 }
 
 .header-copy {
@@ -490,10 +492,10 @@ tr:last-child td {
   }
 
   .logo-mark {
-    width: 40px;
-    height: 40px;
-    flex: 0 0 40px;
-  }
+  width: 58px;
+  height: 58px;
+  flex: 0 0 58px;
+}
 
   .header-copy {
     font-size: 0.95rem;
@@ -619,16 +621,12 @@ tr:last-child td {
 
 /* Small phones */
 @media (max-width: 420px) {
-  .logo {
-    font-size: 1.55rem;
-  }
-
   .logo-mark {
-    width: 36px;
-    height: 36px;
-    flex-basis: 36px;
+    width: 50px;
+    height: 50px;
+    flex-basis: 50px;
   }
-
+}
   .header-copy {
     font-size: 0.88rem;
   }
