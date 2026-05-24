@@ -3,6 +3,7 @@ const API_URL = "https://quiniela-api.alefar90.workers.dev";
 const { useEffect, useMemo, useState } = React;
 const ADMIN_PASSWORD = "";
 const ADMIN_WHATSAPP_NUMBER = "17863120172";
+const WHATSAPP_GROUP_URL = "https://chat.whatsapp.com/EviN0M7ZRG9EBjEbwYZkLO?mode=gi_t";
 
 const WORLD_CUP_GROUPS = {
   A: ["México", "Sudáfrica", "Corea del Sur", "República Checa"],
@@ -598,8 +599,7 @@ saveParticipantToAPI(participant);
     setCurrentParticipantId(participant.id);
     localStorage.setItem(STORAGE_KEYS.currentParticipantId, participant.id);
 
-    alert("Registro guardado.");
-    setActiveTab("Partidos");
+alert("Enhorabuena, ya estás registrado y puedes unirte al grupo en WhatsApp.");    setActiveTab("Partidos");
   }
 
   return /*#__PURE__*/(
