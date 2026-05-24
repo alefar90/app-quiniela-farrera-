@@ -720,3 +720,26 @@ tr:last-child td {
   background: #0b3d91;
   border-radius: 999px;
 }
+.rank-gold td {
+  background: #fff7d6;
+}
+
+.rank-silver td {
+  background: #f2f4f7;
+}
+
+.rank-bronze td {
+  background: #f7e2cf;
+}
+
+.rank-gold td:first-child::before {
+  content: "🥇 ";
+}
+
+.rank-silver td:first-child::before {
+  content: "🥈 ";
+}
+
+.rank-bronze td:first-child::before {
+  content: "🥉 ";
+}
