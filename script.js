@@ -934,7 +934,14 @@ function LeaderboardTable({ leaderboard }) {
 
     React.createElement("tbody", null,
     leaderboard.map((participant, index) => /*#__PURE__*/
-    React.createElement("tr", { key: participant.id }, /*#__PURE__*/
+    React.createElement("tr", {
+      key: participant.id,
+      className:
+        index === 0 ? "rank-gold" :
+        index === 1 ? "rank-silver" :
+        index === 2 ? "rank-bronze" :
+        ""
+    }, /*#__PURE__*/
     React.createElement("td", null, index + 1), /*#__PURE__*/
     React.createElement("td", null, participant.name), /*#__PURE__*/
     React.createElement("td", null, participant.alias || "—"), /*#__PURE__*/
