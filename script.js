@@ -1076,6 +1076,61 @@ function LeaderboardTable({ leaderboard }) {
 
 }
 
+function ExactScoresRankingTable({ leaderboard }) {
+  const exactRanking = leaderboard
+    .filter(participant => participant.totals.exactScores > 0)
+    .sort((a, b) =>
+      b.totals.exactScores - a.totals.exactScores ||
+      b.totals.points - a.totals.points ||
+      a.name.localeCompare(b.name)
+    );
+
+  return /*#__PURE__*/(
+    React.createElement("div", { className: "table-wrap" }, /*#__PURE__*/
+      React.createElement("table", { className: "exact-ranking-table" }, /*#__PURE__*/
+
+        React.createElement("thead", null, /*#__PURE__*/
+          React.createElement("tr", null, /*#__PURE__*/
+            React.createElement("th", null, "Posición"), /*#__PURE__*/
+            React.createElement("th", null, "Participante"), /*#__PURE__*/
+            React.createElement("th", null, "Alias"), /*#__PURE__*/
+            React.createElement("th", null, "Resultados exactos")
+          )
+        ), /*#__PURE__*/
+
+        React.createElement("tbody", null,
+          exactRanking.map((participant, index) => /*#__PURE__*/
+            React.createElement("tr", {
+              key: participant.id,
+              className:
+                index === 0 ? "rank-gold" :
+                index === 1 ? "rank-silver" :
+                index === 2 ? "rank-bronze" :
+                ""
+            }, /*#__PURE__*/
+              React.createElement("td", null, index + 1), /*#__PURE__*/
+              React.createElement("td", null, participant.name), /*#__PURE__*/
+              React.createElement("td", null, participant.alias || "—"), /*#__PURE__*/
+              React.createElement("td", null, /*#__PURE__*/
+                React.createElement("strong", null, participant.totals.exactScores)
+              )
+            )
+          ),
+
+          !exactRanking.length && /*#__PURE__*/
+            React.createElement("tr", null, /*#__PURE__*/
+              React.createElement(
+                "td",
+                { colSpan: "4" },
+                "Todavía no hay participantes con resultados exactos."
+              )
+            )
+        )
+      )
+    )
+  );
+}
+
 function RankingTab({ participants, realResults }) {
   const leaderboard = useMemo(
   () => calculateLeaderboard(participants, realResults),
@@ -1102,8 +1157,18 @@ function RankingTab({ participants, realResults }) {
 
 
 
-    React.createElement(LeaderboardTable, { leaderboard: leaderboard })));
+    React.createElement(LeaderboardTable, { leaderboard: leaderboard }), /*#__PURE__*/
 
+React.createElement("div", { className: "ranking-divider" }), /*#__PURE__*/
+
+React.createElement("h3", null, "Ranking de resultados exactos"), /*#__PURE__*/
+React.createElement(
+  "p",
+  { className: "small" },
+  "Este ranking muestra quiénes han acertado más marcadores exactos. Se usa como criterio de desempate."
+), /*#__PURE__*/
+
+React.createElement(ExactScoresRankingTable, { leaderboard: leaderboard })));
 
 }
 
