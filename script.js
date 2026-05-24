@@ -606,7 +606,16 @@ alert("Enhorabuena, ya estás registrado y puedes unirte al grupo en WhatsApp.")
     React.createElement("section", { className: "card" }, /*#__PURE__*/
     React.createElement("h2", null, "Registro"), /*#__PURE__*/
     React.createElement("p", { className: "small" }, "Tu pa\xEDs, ciudad y zona horaria se usan para mostrarte los horarios de los partidos en tu hora local."), /*#__PURE__*/
-
+    currentParticipantId && React.createElement("div", { className: "notice success" },
+      React.createElement("strong", null, "Enhorabuena, ya estás registrado."),
+      React.createElement("p", null, "Puedes unirte al grupo oficial de WhatsApp de la Quiniela Farrera."),
+      React.createElement("a", {
+        className: "btn success",
+        href: WHATSAPP_GROUP_URL,
+        target: "_blank",
+        rel: "noopener noreferrer"
+      }, "Unirme al grupo de WhatsApp")
+    ),
 
 
     React.createElement("form", { onSubmit: submit, className: "grid grid-2" }, /*#__PURE__*/
