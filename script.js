@@ -941,22 +941,29 @@ function PredictionsTab({ participants, setParticipants, currentParticipantId })
     alert("Borrador guardado.");
   }
 
-  function submitPredictions() {
-    alert(
-    "Advertencia importante: al enviar tus pronósticos, quedarán registrados oficialmente en la Quiniela Farrera. Después del envío no podrás modificarlos. Revisa cuidadosamente todos los marcadores antes de confirmar.");
+  async function submitPredictions() {
+  alert(
+    "Advertencia importante: al enviar tus pronósticos, quedarán registrados oficialmente en la Quiniela Farrera. Después del envío no podrás modificarlos. Revisa cuidadosamente todos los marcadores."
+  );
 
+  const confirmed = confirm(
+    "¿Estás seguro de enviar tus pronósticos? Esta acción no se puede deshacer."
+  );
 
-    const confirmed = confirm(
-    "¿Estás seguro de enviar tus pronósticos? Esta acción no se puede deshacer.");
+  if (!confirmed) return;
 
+  const lockedParticipant = lockParticipantPredictions(participant);
 
-    if (!confirmed) return;
+  setParticipants(participants.map(p => p.id === participant.id ? lockedParticipant : p));
 
-    const lockedParticipant = lockParticipantPredictions(participant);
-
-    setParticipants(participants.map(p => p.id === participant.id ? lockedParticipant : p));
+  try {
+    await saveParticipantToAPI(lockedParticipant);
+    alert("Pronósticos enviados y bloqueados correctamente.");
+  } catch (error) {
+    console.error("Error guardando pronósticos bloqueados:", error);
+    alert("Tus pronósticos se bloquearon en este dispositivo, pero hubo un error guardándolos en el servidor. Intenta de nuevo o avisa al administrador.");
   }
-
+}
   return /*#__PURE__*/(
     React.createElement("section", { className: "card" }, /*#__PURE__*/
     React.createElement("div", { className: "admin-section-title" }, /*#__PURE__*/
