@@ -465,6 +465,22 @@ function HomeTab({ setActiveTab }) {
           )
         )
       ), /*#__PURE__*/
+    React.createElement("div", { className: "card" },
+    React.createElement("h2", null, "Cómo jugar"),
+    React.createElement(
+      "p",
+      { className: "small" },
+      "Mira este tutorial rápido antes de registrarte y llenar tus pronósticos."
+    ),
+    React.createElement("video", {
+      className: "tutorial-video",
+      controls: true,
+      playsInline: true,
+      preload: "metadata",
+      poster: "icon-512.png",
+      src: "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4"
+    })
+    ), /*#__PURE__*/
 
       React.createElement("div", { className: "card" }, /*#__PURE__*/
         React.createElement("h2", null, "Paso a paso"), /*#__PURE__*/
