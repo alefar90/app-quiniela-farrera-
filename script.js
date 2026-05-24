@@ -77,42 +77,137 @@ const USER_TIMEZONES =
       ];
 
 
-function generateGroupMatches(groups) {
-  const kickoffHours = [12, 15, 18, 21];
-  let matchIndex = 0;
+const MATCH_REFERENCE_TIMEZONE = "America/New_York";
 
-  return Object.entries(groups).flatMap(([group, teams]) => {
-    const matches = [];
+function normalizeTeamName(team) {
+  const aliases = {
+    "República de Corea": "Corea del Sur",
+    "RI de Irán": "Irán",
+    "Arabia Saudí": "Arabia Saudita"
+  };
 
-    for (let i = 0; i < teams.length; i++) {
-      for (let j = i + 1; j < teams.length; j++) {
-        const host = HOST_CITIES[matchIndex % HOST_CITIES.length];
-        const dayOffset = Math.floor(matchIndex / 4);
-        const hour = kickoffHours[matchIndex % kickoffHours.length];
-        const day = 11 + dayOffset;
-
-        matches.push({
-          id: `${group}-${i + 1}-${j + 1}`,
-          group,
-          homeTeam: teams[i],
-          awayTeam: teams[j],
-          label: `${teams[i]}-${teams[j]}`,
-          hostCity: host.city,
-          hostCountry: host.country,
-          hostTimeZone: host.timeZone,
-          stadium: host.stadium,
-          kickoffLocalISO: `2026-06-${String(day).padStart(2, "0")}T${String(hour).padStart(2, "0")}:00:00` });
-
-
-        matchIndex++;
-      }
-    }
-
-    return matches;
-  });
+  return aliases[team] || team;
 }
 
-const MATCHES = generateGroupMatches(WORLD_CUP_GROUPS);
+function getGroupMatchId(group, homeTeam, awayTeam) {
+  const teams = WORLD_CUP_GROUPS[group];
+  const normalizedHome = normalizeTeamName(homeTeam);
+  const normalizedAway = normalizeTeamName(awayTeam);
+  const homeIndex = teams.indexOf(normalizedHome) + 1;
+  const awayIndex = teams.indexOf(normalizedAway) + 1;
+  const sorted = [homeIndex, awayIndex].sort((a, b) => a - b);
+
+  return `${group}-${sorted[0]}-${sorted[1]}`;
+}
+
+function createScheduledMatch(group, date, time, homeTeam, awayTeam, stadium) {
+  const normalizedHome = normalizeTeamName(homeTeam);
+  const normalizedAway = normalizeTeamName(awayTeam);
+
+  return {
+    id: getGroupMatchId(group, normalizedHome, normalizedAway),
+    group,
+    homeTeam: normalizedHome,
+    awayTeam: normalizedAway,
+    label: `${normalizedHome}-${normalizedAway}`,
+    hostCity: "Este de Estados Unidos",
+    hostCountry: "Hora ET",
+    hostTimeZone: MATCH_REFERENCE_TIMEZONE,
+    stadium,
+    kickoffLocalISO: `${date}T${time}:00`
+  };
+}
+
+const MATCHES = [
+  createScheduledMatch("A", "2026-06-11", "15:00", "México", "Sudáfrica", "Estadio Ciudad de México"),
+  createScheduledMatch("A", "2026-06-11", "22:00", "República de Corea", "República Checa", "Estadio Guadalajara"),
+
+  createScheduledMatch("B", "2026-06-12", "15:00", "Canadá", "Bosnia y Herzegovina", "Estadio Toronto"),
+  createScheduledMatch("D", "2026-06-12", "21:00", "Estados Unidos", "Paraguay", "Estadio Los Ángeles"),
+
+  createScheduledMatch("B", "2026-06-13", "15:00", "Catar", "Suiza", "Estadio Bahía de San Francisco"),
+  createScheduledMatch("C", "2026-06-13", "18:00", "Brasil", "Marruecos", "Estadio Nueva York Nueva Jersey"),
+  createScheduledMatch("C", "2026-06-13", "21:00", "Haití", "Escocia", "Estadio Boston"),
+  createScheduledMatch("D", "2026-06-14", "00:00", "Australia", "Turquía", "Estadio BC Place Vancouver"),
+
+  createScheduledMatch("E", "2026-06-14", "13:00", "Alemania", "Curazao", "Estadio Houston"),
+  createScheduledMatch("F", "2026-06-14", "16:00", "Países Bajos", "Japón", "Estadio Dallas"),
+  createScheduledMatch("E", "2026-06-14", "19:00", "Costa de Marfil", "Ecuador", "Estadio Filadelfia"),
+  createScheduledMatch("F", "2026-06-14", "22:00", "Suecia", "Túnez", "Estadio Monterrey"),
+
+  createScheduledMatch("H", "2026-06-15", "12:00", "España", "Cabo Verde", "Estadio Atlanta"),
+  createScheduledMatch("G", "2026-06-15", "15:00", "Bélgica", "Egipto", "Estadio Seattle"),
+  createScheduledMatch("H", "2026-06-15", "18:00", "Arabia Saudí", "Uruguay", "Estadio Miami"),
+  createScheduledMatch("G", "2026-06-15", "21:00", "RI de Irán", "Nueva Zelanda", "Estadio Los Ángeles"),
+
+  createScheduledMatch("I", "2026-06-16", "15:00", "Francia", "Senegal", "Estadio Nueva York Nueva Jersey"),
+  createScheduledMatch("I", "2026-06-16", "18:00", "Irak", "Noruega", "Estadio Boston"),
+  createScheduledMatch("J", "2026-06-16", "21:00", "Argentina", "Argelia", "Estadio Kansas City"),
+  createScheduledMatch("J", "2026-06-17", "00:00", "Austria", "Jordania", "Estadio Bahía de San Francisco"),
+
+  createScheduledMatch("K", "2026-06-17", "13:00", "Portugal", "RD Congo", "Estadio Houston"),
+  createScheduledMatch("L", "2026-06-17", "16:00", "Inglaterra", "Croacia", "Estadio Dallas"),
+  createScheduledMatch("L", "2026-06-17", "19:00", "Ghana", "Panamá", "Estadio Toronto"),
+  createScheduledMatch("K", "2026-06-17", "22:00", "Uzbekistán", "Colombia", "Estadio Ciudad de México"),
+
+  createScheduledMatch("A", "2026-06-18", "12:00", "República Checa", "Sudáfrica", "Estadio Atlanta"),
+  createScheduledMatch("B", "2026-06-18", "15:00", "Suiza", "Bosnia y Herzegovina", "Estadio Los Ángeles"),
+  createScheduledMatch("B", "2026-06-18", "18:00", "Canadá", "Catar", "Estadio BC Place Vancouver"),
+  createScheduledMatch("A", "2026-06-18", "21:00", "México", "República de Corea", "Estadio Guadalajara"),
+
+  createScheduledMatch("D", "2026-06-19", "15:00", "Estados Unidos", "Australia", "Estadio Seattle"),
+  createScheduledMatch("C", "2026-06-19", "18:00", "Escocia", "Marruecos", "Estadio Boston"),
+  createScheduledMatch("C", "2026-06-19", "21:00", "Brasil", "Haití", "Estadio Filadelfia"),
+  createScheduledMatch("D", "2026-06-20", "00:00", "Turquía", "Paraguay", "Estadio Bahía de San Francisco"),
+
+  createScheduledMatch("F", "2026-06-20", "13:00", "Países Bajos", "Suecia", "Estadio Houston"),
+  createScheduledMatch("E", "2026-06-20", "16:00", "Alemania", "Costa de Marfil", "Estadio Toronto"),
+  createScheduledMatch("E", "2026-06-20", "22:00", "Ecuador", "Curazao", "Estadio Kansas City"),
+  createScheduledMatch("F", "2026-06-21", "00:00", "Túnez", "Japón", "Estadio Monterrey"),
+
+  createScheduledMatch("H", "2026-06-21", "12:00", "España", "Arabia Saudí", "Estadio Atlanta"),
+  createScheduledMatch("G", "2026-06-21", "15:00", "Bélgica", "Irán", "Estadio Los Ángeles"),
+  createScheduledMatch("H", "2026-06-21", "18:00", "Uruguay", "Cabo Verde", "Estadio Miami"),
+  createScheduledMatch("G", "2026-06-21", "21:00", "Nueva Zelanda", "Egipto", "Estadio BC Place Vancouver"),
+
+  createScheduledMatch("J", "2026-06-22", "13:00", "Argentina", "Austria", "Estadio Dallas"),
+  createScheduledMatch("I", "2026-06-22", "17:00", "Francia", "Irak", "Estadio Filadelfia"),
+  createScheduledMatch("I", "2026-06-22", "20:00", "Noruega", "Senegal", "Estadio Nueva York Nueva Jersey"),
+  createScheduledMatch("J", "2026-06-22", "23:00", "Jordania", "Argelia", "Estadio Bahía de San Francisco"),
+
+  createScheduledMatch("K", "2026-06-23", "13:00", "Portugal", "Uzbekistán", "Estadio Houston"),
+  createScheduledMatch("L", "2026-06-23", "16:00", "Inglaterra", "Ghana", "Estadio Boston"),
+  createScheduledMatch("L", "2026-06-23", "19:00", "Panamá", "Croacia", "Estadio Toronto"),
+  createScheduledMatch("K", "2026-06-23", "22:00", "Colombia", "RD Congo", "Estadio Guadalajara"),
+
+  createScheduledMatch("B", "2026-06-24", "15:00", "Suiza", "Canadá", "Estadio BC Place Vancouver"),
+  createScheduledMatch("B", "2026-06-24", "15:00", "Bosnia y Herzegovina", "Catar", "Estadio Seattle"),
+  createScheduledMatch("C", "2026-06-24", "18:00", "Escocia", "Brasil", "Estadio Miami"),
+  createScheduledMatch("C", "2026-06-24", "18:00", "Marruecos", "Haití", "Estadio Atlanta"),
+  createScheduledMatch("A", "2026-06-24", "21:00", "República Checa", "México", "Estadio Ciudad de México"),
+  createScheduledMatch("A", "2026-06-24", "21:00", "Sudáfrica", "República de Corea", "Estadio Monterrey"),
+
+  createScheduledMatch("E", "2026-06-25", "16:00", "Curazao", "Costa de Marfil", "Estadio Filadelfia"),
+  createScheduledMatch("E", "2026-06-25", "16:00", "Ecuador", "Alemania", "Estadio Nueva York Nueva Jersey"),
+  createScheduledMatch("F", "2026-06-25", "19:00", "Japón", "Suecia", "Estadio Dallas"),
+  createScheduledMatch("F", "2026-06-25", "19:00", "Túnez", "Países Bajos", "Estadio Kansas City"),
+  createScheduledMatch("D", "2026-06-25", "22:00", "Turquía", "Estados Unidos", "Estadio Los Ángeles"),
+  createScheduledMatch("D", "2026-06-25", "22:00", "Paraguay", "Australia", "Estadio Bahía de San Francisco"),
+
+  createScheduledMatch("I", "2026-06-26", "15:00", "Noruega", "Francia", "Estadio Boston"),
+  createScheduledMatch("I", "2026-06-26", "15:00", "Senegal", "Irak", "Estadio Toronto"),
+  createScheduledMatch("H", "2026-06-26", "20:00", "Cabo Verde", "Arabia Saudí", "Estadio Houston"),
+  createScheduledMatch("H", "2026-06-26", "20:00", "Uruguay", "España", "Estadio Guadalajara"),
+  createScheduledMatch("G", "2026-06-26", "23:00", "Egipto", "Irán", "Estadio Seattle"),
+  createScheduledMatch("G", "2026-06-26", "23:00", "Nueva Zelanda", "Bélgica", "Estadio BC Place Vancouver"),
+
+  createScheduledMatch("L", "2026-06-27", "17:00", "Panamá", "Inglaterra", "Estadio Nueva York Nueva Jersey"),
+  createScheduledMatch("L", "2026-06-27", "17:00", "Croacia", "Ghana", "Estadio Filadelfia"),
+  createScheduledMatch("K", "2026-06-27", "19:30", "Colombia", "Portugal", "Estadio Miami"),
+  createScheduledMatch("K", "2026-06-27", "19:30", "RD Congo", "Uzbekistán", "Estadio Atlanta"),
+  createScheduledMatch("J", "2026-06-27", "22:00", "Argelia", "Austria", "Estadio Kansas City"),
+  createScheduledMatch("J", "2026-06-27", "22:00", "Jordania", "Argentina", "Estadio Dallas")
+];
 
 function safeParse(value, fallback) {
   try {var _JSON$parse;
