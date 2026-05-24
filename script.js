@@ -490,52 +490,6 @@ function HomeTab({ setActiveTab }) {
 
 
 
-    React.createElement("div", { className: "card" }, /*#__PURE__*/
-    React.createElement("div", { className: "admin-section-title" }, /*#__PURE__*/
-    React.createElement("div", null, /*#__PURE__*/
-    React.createElement("h2", null, "Calendario de partidos"), /*#__PURE__*/
-    React.createElement("p", { className: "small" }, "Fechas y horas en la hora local de la sede del partido.")), /*#__PURE__*/
-
-    React.createElement("span", { className: "badge" }, MATCHES.length, " partidos \xB7 12 grupos")), /*#__PURE__*/
-
-
-    React.createElement("div", { className: "table-wrap" }, /*#__PURE__*/
-    React.createElement("table", null, /*#__PURE__*/
-    React.createElement("thead", null, /*#__PURE__*/
-    React.createElement("tr", null, /*#__PURE__*/
-    React.createElement("th", null, "Grupo"), /*#__PURE__*/
-    React.createElement("th", null, "Partido"), /*#__PURE__*/
-    React.createElement("th", null, "Sede"), /*#__PURE__*/
-    React.createElement("th", null, "Fecha y hora local de sede"))), /*#__PURE__*/
-
-
-    React.createElement("tbody", null,
-    MATCHES.map((match) => /*#__PURE__*/
-    React.createElement("tr", { key: match.id }, /*#__PURE__*/
-    React.createElement("td", null, /*#__PURE__*/
-    React.createElement("span", { className: "badge" }, match.group)), /*#__PURE__*/
-
-    React.createElement("td", null, /*#__PURE__*/
-    React.createElement("strong", null, match.homeTeam), " vs ", /*#__PURE__*/React.createElement("strong", null, match.awayTeam)), /*#__PURE__*/
-
-    React.createElement("td", null,
-    match.stadium, /*#__PURE__*/
-    React.createElement("br", null), /*#__PURE__*/
-    React.createElement("span", { className: "small" },
-    match.hostCity, ", ", match.hostCountry)), /*#__PURE__*/
-
-
-    React.createElement("td", null,
-    formatMatchTime(match, match.hostTimeZone), /*#__PURE__*/
-    React.createElement("br", null), /*#__PURE__*/
-    React.createElement("span", { className: "small" }, match.hostTimeZone))))))), /*#__PURE__*/
-
-
-
-
-
-
-
     React.createElement("div", { className: "actions", style: { marginTop: 16 } }, /*#__PURE__*/
     React.createElement("button", { className: "btn red", onClick: () => setActiveTab("Registro") }, "Empezar a jugar")))));
 
