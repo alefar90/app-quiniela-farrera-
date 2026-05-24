@@ -1305,7 +1305,8 @@ function AdminTab({ participants, realResults, setRealResults }) {
     React.createElement("div", { className: "card" }, /*#__PURE__*/
     React.createElement("h3", null, "Resumen general"), /*#__PURE__*/
     React.createElement(AdminSummary, { participants: participants, realResults: realResults })), /*#__PURE__*/
-    React.createElement("div", { className: "card" },
+   
+ React.createElement("div", { className: "card" },
   React.createElement("h3", null, "Administrar participantes"),
   participants.length === 0
     ? React.createElement("p", { className: "small" }, "No hay participantes registrados.")
@@ -1337,7 +1338,6 @@ function AdminTab({ participants, realResults, setRealResults }) {
         )
       )
 ), /*#__PURE__*/
-
 
     React.createElement("div", { className: "card" }, /*#__PURE__*/
     React.createElement("div", { className: "admin-section-title" }, /*#__PURE__*/
