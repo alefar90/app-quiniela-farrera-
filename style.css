@@ -743,3 +743,11 @@ tr:last-child td {
 .rank-bronze td:first-child::before {
   content: "🥉 ";
 }
+.tutorial-video {
+  width: 100%;
+  max-height: 560px;
+  border-radius: 18px;
+  border: 1px solid var(--border);
+  background: #000;
+  display: block;
+}
