@@ -606,16 +606,6 @@ alert("Enhorabuena, ya estás registrado y puedes unirte al grupo en WhatsApp.")
 
 
     React.createElement("div", { className: "form-row" }, /*#__PURE__*/
-    React.createElement("label", null, "País donde estás"), /*#__PURE__*/
-    React.createElement("input", { value: form.country, onChange: e => updateField("country", e.target.value) })), /*#__PURE__*/
-
-
-    React.createElement("div", { className: "form-row" }, /*#__PURE__*/
-    React.createElement("label", null, "Ciudad donde estás"), /*#__PURE__*/
-    React.createElement("input", { value: form.city, onChange: e => updateField("city", e.target.value) })), /*#__PURE__*/
-
-
-    React.createElement("div", { className: "form-row" }, /*#__PURE__*/
     React.createElement("label", null, "Tu zona horaria"), /*#__PURE__*/
     React.createElement("select", { value: form.timeZone, onChange: e => updateField("timeZone", e.target.value) },
     USER_TIMEZONES.map((tz) => /*#__PURE__*/
