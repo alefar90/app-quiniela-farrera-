@@ -394,7 +394,7 @@ function Header() {
 }
 
 function NavigationTabs({ activeTab, setActiveTab }) {
-  const tabs = ["Inicio", "Registro", "Partidos", "Pronósticos", "Ranking", "Administrador"];
+  const tabs = ["Inicio", "Registro", "Partidos", "Pronósticos", "Predicciones diarias", "Ranking", "Administrador"];
 
   return /*#__PURE__*/(
     React.createElement("nav", { className: "tabs" },
@@ -1012,6 +1012,107 @@ function RankingTab({ participants, realResults }) {
 
 }
 
+function DailyPredictionsTab({ participants }) {
+  const submittedParticipants = participants.filter(p => p.locked);
+
+  const matchDates = Array.from(
+    new Set(MATCHES.map(match => match.kickoffLocalISO.slice(0, 10)))
+  );
+
+  const [selectedDate, setSelectedDate] = useState(matchDates[0] || "");
+
+  const matchesForDate = MATCHES.filter(
+    match => match.kickoffLocalISO.slice(0, 10) === selectedDate
+  );
+
+  function formatDateInput(dateISO) {
+    const [year, month, day] = dateISO.split("-");
+    return `${day}/${month}/${year}`;
+  }
+
+  function formatDateLabel(dateISO) {
+    const [year, month, day] = dateISO.split("-").map(Number);
+    const date = new Date(Date.UTC(year, month - 1, day));
+
+    return new Intl.DateTimeFormat("es", {
+      weekday: "long",
+      day: "2-digit",
+      month: "long",
+      year: "numeric"
+    }).format(date);
+  }
+
+  function getPredictionText(prediction) {
+    if (!isCompleteScore(prediction)) return "—";
+    return `${prediction.homeGoals}-${prediction.awayGoals}`;
+  }
+
+  return /*#__PURE__*/(
+    React.createElement("section", { className: "card daily-predictions" }, /*#__PURE__*/
+
+      React.createElement("div", { className: "daily-date-picker" }, /*#__PURE__*/
+        React.createElement("label", null, "Selecciona día:"), /*#__PURE__*/
+        React.createElement("select", {
+          value: selectedDate,
+          onChange: e => setSelectedDate(e.target.value)
+        },
+          matchDates.map(date => /*#__PURE__*/
+            React.createElement("option", { key: date, value: date }, formatDateInput(date))
+          )
+        )
+      ), /*#__PURE__*/
+
+      React.createElement("p", { className: "small daily-date-label" }, formatDateLabel(selectedDate)), /*#__PURE__*/
+
+      React.createElement("div", { className: "table-wrap" }, /*#__PURE__*/
+        React.createElement("table", { className: "daily-table" }, /*#__PURE__*/
+
+          React.createElement("thead", null, /*#__PURE__*/
+            React.createElement("tr", null, /*#__PURE__*/
+              React.createElement("th", null, "Nombre"),
+              matchesForDate.map(match => /*#__PURE__*/
+                React.createElement(
+                  "th",
+                  { key: match.id },
+                  `${match.homeTeam}-${match.awayTeam}`
+                )
+              )
+            )
+          ), /*#__PURE__*/
+
+          React.createElement("tbody", null,
+            submittedParticipants.map(participant => /*#__PURE__*/
+              React.createElement("tr", { key: participant.id }, /*#__PURE__*/
+                React.createElement("td", null, participant.name),
+                matchesForDate.map(match => {
+                  const prediction = participant.predictions?.[match.id];
+
+                  return /*#__PURE__*/(
+                    React.createElement(
+                      "td",
+                      { key: match.id },
+                      getPredictionText(prediction)
+                    )
+                  );
+                })
+              )
+            ),
+
+            !submittedParticipants.length && /*#__PURE__*/
+              React.createElement("tr", null, /*#__PURE__*/
+                React.createElement(
+                  "td",
+                  { colSpan: matchesForDate.length + 1 },
+                  "Todavía no hay participantes con pronósticos enviados."
+                )
+              )
+          )
+        )
+      )
+    )
+  );
+}
+
 function AdminLogin({ onLogin }) {
   const [password, setPassword] = useState("");
 
@@ -1488,7 +1589,8 @@ useEffect(() => {
       setParticipants: setParticipants,
       currentParticipantId: currentParticipantId }),
 
-
+    activeTab === "Predicciones diarias" && /*#__PURE__*/
+    React.createElement(DailyPredictionsTab, { participants: participants }),
 
     activeTab === "Ranking" && /*#__PURE__*/
     React.createElement(RankingTab, { participants: participants, realResults: realResults }),
