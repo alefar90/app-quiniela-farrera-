@@ -128,7 +128,7 @@ const MATCHES = [
   createScheduledMatch("B", "2026-06-13", "15:00", "Catar", "Suiza", "Estadio Bahía de San Francisco"),
   createScheduledMatch("C", "2026-06-13", "18:00", "Brasil", "Marruecos", "Estadio Nueva York Nueva Jersey"),
   createScheduledMatch("C", "2026-06-13", "21:00", "Haití", "Escocia", "Estadio Boston"),
-  createScheduledMatch("D", "2026-06-14", "00:00", "Australia", "Turquía", "Estadio BC Place Vancouver"),
+  createScheduledMatch("D", "2026-06-13", "00:00", "Australia", "Turquía", "Estadio BC Place Vancouver"),
 
   createScheduledMatch("E", "2026-06-14", "13:00", "Alemania", "Curazao", "Estadio Houston"),
   createScheduledMatch("F", "2026-06-14", "16:00", "Países Bajos", "Japón", "Estadio Dallas"),
@@ -143,7 +143,7 @@ const MATCHES = [
   createScheduledMatch("I", "2026-06-16", "15:00", "Francia", "Senegal", "Estadio Nueva York Nueva Jersey"),
   createScheduledMatch("I", "2026-06-16", "18:00", "Irak", "Noruega", "Estadio Boston"),
   createScheduledMatch("J", "2026-06-16", "21:00", "Argentina", "Argelia", "Estadio Kansas City"),
-  createScheduledMatch("J", "2026-06-17", "00:00", "Austria", "Jordania", "Estadio Bahía de San Francisco"),
+  createScheduledMatch("J", "2026-06-16", "00:00", "Austria", "Jordania", "Estadio Bahía de San Francisco"),
 
   createScheduledMatch("K", "2026-06-17", "13:00", "Portugal", "RD Congo", "Estadio Houston"),
   createScheduledMatch("L", "2026-06-17", "16:00", "Inglaterra", "Croacia", "Estadio Dallas"),
@@ -158,12 +158,12 @@ const MATCHES = [
   createScheduledMatch("D", "2026-06-19", "15:00", "Estados Unidos", "Australia", "Estadio Seattle"),
   createScheduledMatch("C", "2026-06-19", "18:00", "Escocia", "Marruecos", "Estadio Boston"),
   createScheduledMatch("C", "2026-06-19", "21:00", "Brasil", "Haití", "Estadio Filadelfia"),
-  createScheduledMatch("D", "2026-06-20", "00:00", "Turquía", "Paraguay", "Estadio Bahía de San Francisco"),
+  createScheduledMatch("D", "2026-06-19", "00:00", "Turquía", "Paraguay", "Estadio Bahía de San Francisco"),
 
   createScheduledMatch("F", "2026-06-20", "13:00", "Países Bajos", "Suecia", "Estadio Houston"),
   createScheduledMatch("E", "2026-06-20", "16:00", "Alemania", "Costa de Marfil", "Estadio Toronto"),
   createScheduledMatch("E", "2026-06-20", "22:00", "Ecuador", "Curazao", "Estadio Kansas City"),
-  createScheduledMatch("F", "2026-06-21", "00:00", "Túnez", "Japón", "Estadio Monterrey"),
+  createScheduledMatch("F", "2026-06-20", "00:00", "Túnez", "Japón", "Estadio Monterrey"),
 
   createScheduledMatch("H", "2026-06-21", "12:00", "España", "Arabia Saudí", "Estadio Atlanta"),
   createScheduledMatch("G", "2026-06-21", "15:00", "Bélgica", "Irán", "Estadio Los Ángeles"),
