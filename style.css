@@ -751,3 +751,101 @@ tr:last-child td {
   background: #000;
   display: block;
 }
+.daily-predictions {
+  overflow: hidden;
+}
+
+.daily-date-picker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.daily-date-picker label {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--blue-dark);
+}
+
+.daily-date-picker select {
+  max-width: 260px;
+  text-align: center;
+  font-size: 1.35rem;
+  font-weight: 900;
+  color: var(--blue-dark);
+  border: 3px solid var(--blue);
+  border-radius: 0;
+  padding: 12px 18px;
+  background: white;
+}
+
+.daily-date-label {
+  text-align: center;
+  margin-bottom: 18px;
+}
+
+.daily-table th {
+  text-align: center;
+  vertical-align: bottom;
+  white-space: normal;
+  min-width: 180px;
+}
+
+.daily-table th:first-child,
+.daily-table td:first-child {
+  text-align: left;
+  min-width: 220px;
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  background: white;
+}
+
+.daily-table thead th:first-child {
+  background: #eef4ff;
+  z-index: 3;
+}
+
+.daily-table td {
+  text-align: center;
+  font-weight: 700;
+}
+
+.daily-table tbody tr:nth-child(odd) td {
+  background: #f3f4f6;
+}
+
+.daily-table tbody tr:nth-child(even) td {
+  background: white;
+}
+
+.daily-table tbody tr:nth-child(odd) td:first-child {
+  background: #f3f4f6;
+}
+
+.daily-table tbody tr:nth-child(even) td:first-child {
+  background: white;
+}
+
+@media (max-width: 700px) {
+  .daily-date-picker label {
+    font-size: 1.15rem;
+  }
+
+  .daily-date-picker select {
+    font-size: 1.05rem;
+    max-width: 220px;
+  }
+
+  .daily-table th {
+    min-width: 150px;
+  }
+
+  .daily-table th:first-child,
+  .daily-table td:first-child {
+    min-width: 150px;
+  }
+}
