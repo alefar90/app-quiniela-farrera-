@@ -1255,6 +1255,33 @@ function AdminTab({ participants, realResults, setRealResults }) {
 
   const sentParticipants = participants.filter(p => p.locked);
   const leaderboard = calculateLeaderboard(participants, realResults);
+  async function deleteParticipant(id, alias) {
+  const confirmDelete = confirm(
+    `¿Eliminar al participante ${alias || id}? Esta acción no se puede deshacer.`
+  );
+
+  if (!confirmDelete) return;
+
+  try {
+    const response = await fetch(`${API_URL}/admin/participants/${id}`, {
+      method: "DELETE",
+      headers: {
+        "x-admin-token": sessionStorage.getItem(STORAGE_KEYS.adminSession)
+      }
+    });
+
+    if (!response.ok) {
+      alert("No se pudo eliminar el participante.");
+      return;
+    }
+
+    alert(`${alias || "Participante"} eliminado correctamente.`);
+    location.reload();
+  } catch (error) {
+    console.error(error);
+    alert("Error eliminando participante.");
+  }
+}
 
   return /*#__PURE__*/(
     React.createElement("section", { className: "admin-layout" }, /*#__PURE__*/
@@ -1278,6 +1305,38 @@ function AdminTab({ participants, realResults, setRealResults }) {
     React.createElement("div", { className: "card" }, /*#__PURE__*/
     React.createElement("h3", null, "Resumen general"), /*#__PURE__*/
     React.createElement(AdminSummary, { participants: participants, realResults: realResults })), /*#__PURE__*/
+    React.createElement("div", { className: "card" },
+  React.createElement("h3", null, "Administrar participantes"),
+  participants.length === 0
+    ? React.createElement("p", { className: "small" }, "No hay participantes registrados.")
+    : React.createElement("div", { className: "table-wrap" },
+        React.createElement("table", null,
+          React.createElement("thead", null,
+            React.createElement("tr", null,
+              React.createElement("th", null, "Nombre"),
+              React.createElement("th", null, "Alias"),
+              React.createElement("th", null, "Estado"),
+              React.createElement("th", null, "Acción")
+            )
+          ),
+          React.createElement("tbody", null,
+            participants.map(p =>
+              React.createElement("tr", { key: p.id },
+                React.createElement("td", null, p.name || "-"),
+                React.createElement("td", null, p.alias || "-"),
+                React.createElement("td", null, p.locked ? "Enviado" : "Pendiente"),
+                React.createElement("td", null,
+                  React.createElement("button", {
+                    className: "btn danger",
+                    onClick: () => deleteParticipant(p.id, p.alias || p.name)
+                  }, "Eliminar")
+                )
+              )
+            )
+          )
+        )
+      )
+), /*#__PURE__*/
 
 
     React.createElement("div", { className: "card" }, /*#__PURE__*/
