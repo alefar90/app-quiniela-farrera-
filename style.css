@@ -35,6 +35,22 @@ body {
   color: var(--text);
 }
 
+.sort-button {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--blue-dark);
+  font: inherit;
+  font-weight: 900;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+}
+
+.sort-button:hover {
+  color: var(--blue);
+  text-decoration: underline;
+}
 button,
 input,
 select,
