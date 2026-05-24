@@ -628,70 +628,116 @@ function MatchesTab({ participants, currentParticipantId }) {
   const participant = participants.find(p => p.id === currentParticipantId);
   const userTimeZone = (participant === null || participant === void 0 ? void 0 : participant.timeZone) || getBrowserTimeZone();
 
+  const [sortConfig, setSortConfig] = useState({
+    key: "group",
+    direction: "asc"
+  });
+
+  function getSortValue(match, key) {
+    if (key === "group") return match.group;
+    if (key === "match") return `${match.homeTeam} vs ${match.awayTeam}`;
+    if (key === "venue") return `${match.stadium} ${match.hostCity} ${match.hostCountry}`;
+    if (key === "hostTime") return zonedDateFromLocalISO(match.kickoffLocalISO, match.hostTimeZone).getTime();
+    if (key === "userTime") return zonedDateFromLocalISO(match.kickoffLocalISO, match.hostTimeZone).getTime();
+    return "";
+  }
+
+  function sortMatches(key) {
+    setSortConfig(prev => ({
+      key,
+      direction: prev.key === key && prev.direction === "asc" ? "desc" : "asc"
+    }));
+  }
+
+  function sortLabel(key, label) {
+    if (sortConfig.key !== key) return `${label} ↕`;
+    return `${label} ${sortConfig.direction === "asc" ? "↑" : "↓"}`;
+  }
+
+  const sortedMatches = [...MATCHES].sort((a, b) => {
+    const aValue = getSortValue(a, sortConfig.key);
+    const bValue = getSortValue(b, sortConfig.key);
+
+    if (typeof aValue === "number" && typeof bValue === "number") {
+      return sortConfig.direction === "asc" ? aValue - bValue : bValue - aValue;
+    }
+
+    return sortConfig.direction === "asc"
+      ? String(aValue).localeCompare(String(bValue), "es")
+      : String(bValue).localeCompare(String(aValue), "es");
+  });
+
   return /*#__PURE__*/(
     React.createElement("section", { className: "card" }, /*#__PURE__*/
-    React.createElement("div", { className: "admin-section-title" }, /*#__PURE__*/
-    React.createElement("div", null, /*#__PURE__*/
-    React.createElement("h2", null, "Partidos"), /*#__PURE__*/
-    React.createElement("p", { className: "small" }, "Hora de sede y hora local del participante.")), /*#__PURE__*/
+      React.createElement("div", { className: "admin-section-title" }, /*#__PURE__*/
+        React.createElement("div", null, /*#__PURE__*/
+          React.createElement("h2", null, "Partidos"), /*#__PURE__*/
+          React.createElement("p", { className: "small" }, "Hora de sede y tu hora local según la zona horaria seleccionada.")
+        ), /*#__PURE__*/
+        React.createElement("span", { className: "badge" }, MATCHES.length, " partidos")
+      ),
 
+      !participant && /*#__PURE__*/
+        React.createElement("div", { className: "notice warning" }, "Regístrate primero para mostrar tu hora local."), /*#__PURE__*/
 
+      React.createElement("div", { className: "table-wrap" }, /*#__PURE__*/
+        React.createElement("table", null, /*#__PURE__*/
+          React.createElement("thead", null, /*#__PURE__*/
+            React.createElement("tr", null, /*#__PURE__*/
+              React.createElement("th", null,
+                React.createElement("button", { className: "sort-button", onClick: () => sortMatches("group") }, sortLabel("group", "Grupo"))
+              ), /*#__PURE__*/
+              React.createElement("th", null,
+                React.createElement("button", { className: "sort-button", onClick: () => sortMatches("match") }, sortLabel("match", "Partido"))
+              ), /*#__PURE__*/
+              React.createElement("th", null,
+                React.createElement("button", { className: "sort-button", onClick: () => sortMatches("venue") }, sortLabel("venue", "Sede"))
+              ), /*#__PURE__*/
+              React.createElement("th", null,
+                React.createElement("button", { className: "sort-button", onClick: () => sortMatches("hostTime") }, sortLabel("hostTime", "Hora local de sede"))
+              ), /*#__PURE__*/
+              React.createElement("th", null,
+                React.createElement("button", { className: "sort-button", onClick: () => sortMatches("userTime") }, sortLabel("userTime", "Tu hora local"))
+              )
+            )
+          ), /*#__PURE__*/
 
-    React.createElement("span", { className: "badge" }, MATCHES.length, " partidos")),
+          React.createElement("tbody", null,
+            sortedMatches.map((match) => /*#__PURE__*/
+              React.createElement("tr", { key: match.id }, /*#__PURE__*/
+                React.createElement("td", null, /*#__PURE__*/
+                  React.createElement("span", { className: "badge" }, match.group)
+                ), /*#__PURE__*/
 
+                React.createElement("td", null, /*#__PURE__*/
+                  React.createElement("strong", null, match.homeTeam), " vs ", /*#__PURE__*/
+                  React.createElement("strong", null, match.awayTeam)
+                ), /*#__PURE__*/
 
-    !participant && /*#__PURE__*/
-    React.createElement("div", { className: "notice warning" }, "Reg\xEDstrate primero para mostrar la hora local seg\xFAn tu pa\xEDs y ciudad."), /*#__PURE__*/
+                React.createElement("td", null,
+                  match.stadium, /*#__PURE__*/
+                  React.createElement("br", null), /*#__PURE__*/
+                  React.createElement("span", { className: "small" }, match.hostCity, ", ", match.hostCountry)
+                ), /*#__PURE__*/
 
+                React.createElement("td", null,
+                  formatMatchTime(match, match.hostTimeZone), /*#__PURE__*/
+                  React.createElement("br", null), /*#__PURE__*/
+                  React.createElement("span", { className: "small" }, match.hostTimeZone)
+                ), /*#__PURE__*/
 
-
-
-    React.createElement("div", { className: "table-wrap" }, /*#__PURE__*/
-    React.createElement("table", null, /*#__PURE__*/
-    React.createElement("thead", null, /*#__PURE__*/
-    React.createElement("tr", null, /*#__PURE__*/
-    React.createElement("th", null, "Grupo"), /*#__PURE__*/
-    React.createElement("th", null, "Partido"), /*#__PURE__*/
-    React.createElement("th", null, "Sede"), /*#__PURE__*/
-    React.createElement("th", null, "Hora local de sede"), /*#__PURE__*/
-    React.createElement("th", null, "Tu hora local"))), /*#__PURE__*/
-
-
-    React.createElement("tbody", null,
-    MATCHES.map((match) => /*#__PURE__*/
-    React.createElement("tr", { key: match.id }, /*#__PURE__*/
-    React.createElement("td", null, /*#__PURE__*/
-    React.createElement("span", { className: "badge" }, match.group)), /*#__PURE__*/
-
-    React.createElement("td", null, /*#__PURE__*/
-    React.createElement("strong", null, match.homeTeam), " vs ", /*#__PURE__*/React.createElement("strong", null, match.awayTeam)), /*#__PURE__*/
-
-    React.createElement("td", null,
-    match.stadium, /*#__PURE__*/
-    React.createElement("br", null), /*#__PURE__*/
-    React.createElement("span", { className: "small" },
-    match.hostCity, ", ", match.hostCountry)), /*#__PURE__*/
-
-
-    React.createElement("td", null,
-    formatMatchTime(match, match.hostTimeZone), /*#__PURE__*/
-    React.createElement("br", null), /*#__PURE__*/
-    React.createElement("span", { className: "small" }, match.hostTimeZone)), /*#__PURE__*/
-
-    React.createElement("td", null,
-    formatMatchTime(match, userTimeZone), /*#__PURE__*/
-    React.createElement("br", null), /*#__PURE__*/
-    React.createElement("span", { className: "small" },
-    participant !== null && participant !== void 0 && participant.city ? `${participant.city}, ${participant.country}` : userTimeZone)))))))));
-
-
-
-
-
-
-
-
-
+                React.createElement("td", null,
+                  formatMatchTime(match, userTimeZone), /*#__PURE__*/
+                  React.createElement("br", null), /*#__PURE__*/
+                  React.createElement("span", { className: "small" }, userTimeZone)
+                )
+              )
+            )
+          )
+        )
+      )
+    )
+  );
 }
 
 function PredictionMatchCard({ match, prediction, locked, onChange }) {var _prediction$homeGoals, _prediction$awayGoals;
