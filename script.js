@@ -54,23 +54,27 @@ const HOST_CITIES = [
 { city: "Houston", country: "Estados Unidos", timeZone: "America/Chicago", stadium: "NRG Stadium" }];
 
 
-const USER_TIMEZONES = [
-"America/New_York",
-"America/Chicago",
-"America/Denver",
-"America/Los_Angeles",
-"America/Mexico_City",
-"America/Monterrey",
-"America/Bogota",
-"America/Lima",
-"America/Caracas",
-"America/Santo_Domingo",
-"America/Panama",
-"America/Santiago",
-"America/Argentina/Buenos_Aires",
-"America/Toronto",
-"America/Vancouver",
-"Europe/Madrid"];
+const USER_TIMEZONES =
+  typeof Intl.supportedValuesOf === "function"
+    ? Intl.supportedValuesOf("timeZone")
+    : [
+        "America/New_York",
+        "America/Chicago",
+        "America/Denver",
+        "America/Los_Angeles",
+        "America/Mexico_City",
+        "America/Monterrey",
+        "America/Bogota",
+        "America/Lima",
+        "America/Caracas",
+        "America/Santo_Domingo",
+        "America/Panama",
+        "America/Santiago",
+        "America/Argentina/Buenos_Aires",
+        "America/Toronto",
+        "America/Vancouver",
+        "Europe/Madrid"
+      ];
 
 
 function generateGroupMatches(groups) {
@@ -568,8 +572,7 @@ alert("Enhorabuena, ya estás registrado y puedes unirte al grupo en WhatsApp.")
   return /*#__PURE__*/(
     React.createElement("section", { className: "card" }, /*#__PURE__*/
     React.createElement("h2", null, "Registro"), /*#__PURE__*/
-    React.createElement("p", { className: "small" }, "Tu pa\xEDs, ciudad y zona horaria se usan para mostrarte los horarios de los partidos en tu hora local."), /*#__PURE__*/
-    currentParticipantId && React.createElement("div", { className: "notice success" },
+    React.createElement("p", { className: "small" }, "Detectamos tu zona horaria automáticamente para mostrarte los partidos en tu hora local. Si no es correcta, puedes cambiarla."), /*#__PURE__*/    currentParticipantId && React.createElement("div", { className: "notice success" },
       React.createElement("strong", null, "Enhorabuena, ya estás registrado."),
       React.createElement("p", null, "Puedes unirte al grupo oficial de WhatsApp de la Quiniela Farrera."),
       React.createElement("a", {
@@ -603,17 +606,17 @@ alert("Enhorabuena, ya estás registrado y puedes unirte al grupo en WhatsApp.")
 
 
     React.createElement("div", { className: "form-row" }, /*#__PURE__*/
-    React.createElement("label", null, "Pa\xEDs donde est\xE1s"), /*#__PURE__*/
+    React.createElement("label", null, "País donde estás"), /*#__PURE__*/
     React.createElement("input", { value: form.country, onChange: e => updateField("country", e.target.value) })), /*#__PURE__*/
 
 
     React.createElement("div", { className: "form-row" }, /*#__PURE__*/
-    React.createElement("label", null, "Ciudad donde est\xE1s"), /*#__PURE__*/
+    React.createElement("label", null, "Ciudad donde estás"), /*#__PURE__*/
     React.createElement("input", { value: form.city, onChange: e => updateField("city", e.target.value) })), /*#__PURE__*/
 
 
     React.createElement("div", { className: "form-row" }, /*#__PURE__*/
-    React.createElement("label", null, "Zona horaria"), /*#__PURE__*/
+    React.createElement("label", null, "Tu zona horaria"), /*#__PURE__*/
     React.createElement("select", { value: form.timeZone, onChange: e => updateField("timeZone", e.target.value) },
     USER_TIMEZONES.map((tz) => /*#__PURE__*/
     React.createElement("option", { key: tz, value: tz },
