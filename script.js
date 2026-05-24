@@ -445,59 +445,68 @@ function ScoringRulesTable() {
 function HomeTab({ setActiveTab }) {
   return /*#__PURE__*/(
     React.createElement("section", { className: "grid" }, /*#__PURE__*/
-    React.createElement("div", { className: "card" }, /*#__PURE__*/
-    React.createElement("h1", null, "Bienvenido a la Quiniela Farrera"), /*#__PURE__*/
-    React.createElement("p", { className: "lead" }, "Participa en la Quiniela Farrera del Mundial 2026. Reg\xEDstrate, revisa el calendario, llena tus pron\xF3sticos y env\xEDalos oficialmente cuando est\xE9s seguro."), /*#__PURE__*/
 
+      React.createElement("div", { className: "card" }, /*#__PURE__*/
+        React.createElement("h1", null, "Bienvenido a la Quiniela Farrera"), /*#__PURE__*/
+        React.createElement(
+          "p",
+          { className: "lead" },
+          "Participa en la Quiniela Farrera del Mundial 2026. Regístrate, revisa los partidos, llena tus pronósticos y envíalos oficialmente cuando estés seguro."
+        ), /*#__PURE__*/
+        React.createElement("div", { className: "actions" }, /*#__PURE__*/
+          React.createElement(
+            "button",
+            { className: "btn red", onClick: () => setActiveTab("Registro") },
+            "Empezar a jugar"
+          )
+        )
+      ), /*#__PURE__*/
 
+      React.createElement("div", { className: "card" }, /*#__PURE__*/
+        React.createElement("h2", null, "Paso a paso"), /*#__PURE__*/
+        React.createElement("div", { className: "grid grid-4" }, /*#__PURE__*/
 
+          React.createElement("div", { className: "stat" }, /*#__PURE__*/
+            React.createElement("strong", null, "1"), /*#__PURE__*/
+            React.createElement("span", null, "Regístrate con tu nombre y alias.")
+          ), /*#__PURE__*/
 
-    React.createElement("div", { className: "actions" }, /*#__PURE__*/
-    React.createElement("button", { className: "btn red", onClick: () => setActiveTab("Registro") }, "Empezar a jugar"))), /*#__PURE__*/
+          React.createElement("div", { className: "stat" }, /*#__PURE__*/
+            React.createElement("strong", null, "2"), /*#__PURE__*/
+            React.createElement("span", null, "Selecciona tu zona horaria.")
+          ), /*#__PURE__*/
 
+          React.createElement("div", { className: "stat" }, /*#__PURE__*/
+            React.createElement("strong", null, "3"), /*#__PURE__*/
+            React.createElement("span", null, "Llena los goles de cada partido.")
+          ), /*#__PURE__*/
 
+          React.createElement("div", { className: "stat" }, /*#__PURE__*/
+            React.createElement("strong", null, "4"), /*#__PURE__*/
+            React.createElement("span", null, "Envía tus pronósticos. Luego quedan bloqueados.")
+          )
+        )
+      ), /*#__PURE__*/
 
+      React.createElement("div", { className: "card" }, /*#__PURE__*/
+        React.createElement("h2", null, "Reglas de puntuación"), /*#__PURE__*/
+        React.createElement(ScoringRulesTable, null), /*#__PURE__*/
+        React.createElement(
+          "div",
+          { className: "notice" },
+          "Ejemplo: si Inglaterra gana 2-1 a Croacia y pronosticas 2-1, sumas 6 puntos: 3 por 1X2 correcto, 1 por diferencia correcta y 2 por marcador exacto."
+        )
+      ), /*#__PURE__*/
 
-
-    React.createElement("div", { className: "card" }, /*#__PURE__*/
-    React.createElement("h2", null, "Paso a paso"), /*#__PURE__*/
-    React.createElement("div", { className: "grid grid-4" }, /*#__PURE__*/
-    React.createElement("div", { className: "stat" }, /*#__PURE__*/
-    React.createElement("strong", null, "1"), /*#__PURE__*/
-    React.createElement("span", null, "Reg\xEDstrate con tu nombre y alias.")), /*#__PURE__*/
-
-    React.createElement("div", { className: "stat" }, /*#__PURE__*/
-    React.createElement("strong", null, "2"), /*#__PURE__*/
-    React.createElement("span", null, "Indica tu pa\xEDs, ciudad y zona horaria.")), /*#__PURE__*/
-
-    React.createElement("div", { className: "stat" }, /*#__PURE__*/
-    React.createElement("strong", null, "3"), /*#__PURE__*/
-    React.createElement("span", null, "Llena los goles de cada partido.")), /*#__PURE__*/
-
-    React.createElement("div", { className: "stat" }, /*#__PURE__*/
-    React.createElement("strong", null, "4"), /*#__PURE__*/
-    React.createElement("span", null, "Env\xEDa tus pron\xF3sticos. Luego quedan bloqueados.")))), /*#__PURE__*/
-
-
-
-
-    React.createElement("div", { className: "card" }, /*#__PURE__*/
-    React.createElement("h2", null, "Reglas de puntuaci\xF3n"), /*#__PURE__*/
-    React.createElement(ScoringRulesTable, null), /*#__PURE__*/
-    React.createElement("div", { className: "notice" }, "Ejemplo: si Inglaterra gana 2-1 a Croacia y pronosticas 2-1, sumas 6 puntos: 3 por 1X2 correcto, 1 por diferencia correcta y 2 por marcador exacto.")), /*#__PURE__*/
-
-
-
-
-
-    React.createElement("div", { className: "actions", style: { marginTop: 16 } }, /*#__PURE__*/
-    React.createElement("button", { className: "btn red", onClick: () => setActiveTab("Registro") }, "Empezar a jugar")))));
-
-
-
-
-
-
+      React.createElement("div", { className: "actions", style: { marginTop: 16 } }, /*#__PURE__*/
+        React.createElement(
+          "button",
+          { className: "btn red", onClick: () => setActiveTab("Registro") },
+          "Empezar a jugar"
+        )
+      )
+    )
+  );
 }
 
 function RegistrationTab({
