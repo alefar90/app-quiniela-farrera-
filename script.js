@@ -53,6 +53,25 @@ const HOST_CITIES = [
 { city: "Atlanta", country: "Estados Unidos", timeZone: "America/New_York", stadium: "Mercedes-Benz Stadium" },
 { city: "Houston", country: "Estados Unidos", timeZone: "America/Chicago", stadium: "NRG Stadium" }];
 
+const PHONE_COUNTRY_CODES = [
+  { label: "🇺🇸/🇨🇦 +1", value: "+1" },
+  { label: "🇻🇪 +58", value: "+58" },
+  { label: "🇨🇴 +57", value: "+57" },
+  { label: "🇲🇽 +52", value: "+52" },
+  { label: "🇪🇸 +34", value: "+34" },
+  { label: "🇦🇷 +54", value: "+54" },
+  { label: "🇨🇱 +56", value: "+56" },
+  { label: "🇵🇪 +51", value: "+51" },
+  { label: "🇪🇨 +593", value: "+593" },
+  { label: "🇵🇦 +507", value: "+507" },
+  { label: "🇨🇷 +506", value: "+506" },
+  { label: "🇩🇴 +1", value: "+1" },
+  { label: "🇬🇧 +44", value: "+44" },
+  { label: "🇫🇷 +33", value: "+33" },
+  { label: "🇩🇪 +49", value: "+49" },
+  { label: "🇮🇹 +39", value: "+39" },
+  { label: "🇵🇹 +351", value: "+351" }
+];
 
 const USER_TIMEZONES =
   typeof Intl.supportedValuesOf === "function"
@@ -251,9 +270,89 @@ async function saveRealResultsToAPI(realResults) {
 
   return response.json();
 }
+
+function getPhoneCodeFromTimeZone(timeZone) {
+  const map = {
+    "America/New_York": "+1",
+    "America/Chicago": "+1",
+    "America/Denver": "+1",
+    "America/Los_Angeles": "+1",
+    "America/Toronto": "+1",
+    "America/Vancouver": "+1",
+    "America/Mexico_City": "+52",
+    "America/Monterrey": "+52",
+    "America/Bogota": "+57",
+    "America/Lima": "+51",
+    "America/Caracas": "+58",
+    "America/Panama": "+507",
+    "America/Santo_Domingo": "+1",
+    "America/Puerto_Rico": "+1",
+    "America/Santiago": "+56",
+    "America/Argentina/Buenos_Aires": "+54",
+    "America/Montevideo": "+598",
+    "America/Asuncion": "+595",
+    "America/La_Paz": "+591",
+    "America/Guayaquil": "+593",
+    "America/Costa_Rica": "+506",
+    "America/Guatemala": "+502",
+    "America/El_Salvador": "+503",
+    "America/Tegucigalpa": "+504",
+    "America/Managua": "+505",
+    "America/Havana": "+53",
+    "Europe/Madrid": "+34",
+    "Europe/London": "+44",
+    "Europe/Paris": "+33",
+    "Europe/Berlin": "+49",
+    "Europe/Rome": "+39",
+    "Europe/Lisbon": "+351"
+  };
+
+  return map[timeZone] || "+1";
+}
+function getPhoneCodeFromTimeZone(timeZone) {
+  const map = {
+    "America/New_York": "+1",
+    "America/Chicago": "+1",
+    "America/Denver": "+1",
+    "America/Los_Angeles": "+1",
+    "America/Toronto": "+1",
+    "America/Vancouver": "+1",
+    "America/Mexico_City": "+52",
+    "America/Monterrey": "+52",
+    "America/Bogota": "+57",
+    "America/Lima": "+51",
+    "America/Caracas": "+58",
+    "America/Panama": "+507",
+    "America/Santo_Domingo": "+1",
+    "America/Puerto_Rico": "+1",
+    "America/Santiago": "+56",
+    "America/Argentina/Buenos_Aires": "+54",
+    "America/Montevideo": "+598",
+    "America/Asuncion": "+595",
+    "America/La_Paz": "+591",
+    "America/Guayaquil": "+593",
+    "America/Costa_Rica": "+506",
+    "America/Guatemala": "+502",
+    "America/El_Salvador": "+503",
+    "America/Tegucigalpa": "+504",
+    "America/Managua": "+505",
+    "America/Havana": "+53",
+    "Europe/Madrid": "+34",
+    "Europe/London": "+44",
+    "Europe/Paris": "+33",
+    "Europe/Berlin": "+49",
+    "Europe/Rome": "+39",
+    "Europe/Lisbon": "+351"
+  };
+
+  return map[timeZone] || "+1";
+}
+
+
 function getBrowserTimeZone() {
   return Intl.DateTimeFormat().resolvedOptions().timeZone || "America/New_York";
 }
+
 
 function zonedDateFromLocalISO(localISO, timeZone) {
   const guess = new Date(`${localISO}Z`);
@@ -654,15 +753,16 @@ function RegistrationTab({
   setActiveTab })
 {
   const current = participants.find(p => p.id === currentParticipantId);
+const detectedTimeZone = (current === null || current === void 0 ? void 0 : current.timeZone) || getBrowserTimeZone();
 
-  const [form, setForm] = useState({
-    name: (current === null || current === void 0 ? void 0 : current.name) || "",
-    alias: (current === null || current === void 0 ? void 0 : current.alias) || "",
-    phone: (current === null || current === void 0 ? void 0 : current.phone) || "",
-    email: (current === null || current === void 0 ? void 0 : current.email) || "",
-    country: (current === null || current === void 0 ? void 0 : current.country) || "",
-    city: (current === null || current === void 0 ? void 0 : current.city) || "",
-    timeZone: (current === null || current === void 0 ? void 0 : current.timeZone) || getBrowserTimeZone() });
+const [form, setForm] = useState({
+  name: (current === null || current === void 0 ? void 0 : current.name) || "",
+  alias: (current === null || current === void 0 ? void 0 : current.alias) || "",
+  phoneCode: (current === null || current === void 0 ? void 0 : current.phoneCode) || getPhoneCodeFromTimeZone(detectedTimeZone),
+  phone: (current === null || current === void 0 ? void 0 : current.phone) || "",
+  email: (current === null || current === void 0 ? void 0 : current.email) || "",
+  timeZone: detectedTimeZone
+});
 
 
   function updateField(field, value) {
