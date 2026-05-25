@@ -354,24 +354,32 @@ function calculateMatchPoints(prediction, realResult, rules = SCORING_RULES) {
 }
 
 function calculateParticipantTotal(participant, realResults, rules = SCORING_RULES) {
-  return Object.entries(participant.predictions || {}).reduce(
-  (acc, [matchId, prediction]) => {
-    const result = calculateMatchPoints(prediction, realResults[matchId], rules);
+  return MATCHES.reduce(
+    (acc, match) => {
+      const prediction =
+        participant.predictions?.[match.id] ||
+        participant.predictions?.[match.label];
 
-    acc.points += result.points;
-    acc.correct1x2 += result.correct1x2 ? 1 : 0;
-    acc.exactScores += result.exactScore ? 1 : 0;
-    acc.correctGoalDifferences += result.correctGoalDifference ? 1 : 0;
+      const result =
+        realResults?.[match.id] ||
+        realResults?.[match.label];
 
-    return acc;
-  },
-  {
-    points: 0,
-    correct1x2: 0,
-    exactScores: 0,
-    correctGoalDifferences: 0 });
+      const score = calculateMatchPoints(prediction, result, rules);
 
+      acc.points += score.points;
+      acc.correct1x2 += score.correct1x2 ? 1 : 0;
+      acc.exactScores += score.exactScore ? 1 : 0;
+      acc.correctGoalDifferences += score.correctGoalDifference ? 1 : 0;
 
+      return acc;
+    },
+    {
+      points: 0,
+      correct1x2: 0,
+      exactScores: 0,
+      correctGoalDifferences: 0
+    }
+  );
 }
 
 function calculateLeaderboard(participants, realResults, rules = SCORING_RULES) {
@@ -1458,14 +1466,14 @@ function AdminResultsEditor({ realResults, setRealResults }) {
   const groupMatches = MATCHES.filter(m => m.group === groupFilter);
 
   function updateResult(matchId, field, value) {
-    setRealResults({
-      ...realResults,
-      [matchId]: {
-        ...realResults[matchId],
-        [field]: value } });
-
-
-  }
+  setRealResults(prev => ({
+    ...prev,
+    [matchId]: {
+      ...prev[matchId],
+      [field]: value
+    }
+  }));
+}
 function clearResult(matchId) {
   const confirmed = confirm("¿Borrar el resultado real de este partido?");
 
