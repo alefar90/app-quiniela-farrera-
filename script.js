@@ -1764,8 +1764,21 @@ useEffect(() => {
   async function loadParticipants() {
     try {
       const response = await fetch(`${API_URL}/participants`);
-      const data = await response.json();
-      setParticipants(data);
+const data = await response.json();
+
+const parsedParticipants = data.map(participant => ({
+  ...participant,
+  predictions:
+    typeof participant.predictions === "string"
+      ? JSON.parse(participant.predictions || "{}")
+      : participant.predictions || {},
+  locked:
+    participant.locked === true ||
+participant.locked === 1 ||
+participant.locked === "1"
+}));
+
+setParticipants(parsedParticipants);
     } catch (error) {
       console.error("Error cargando participantes:", error);
     }
