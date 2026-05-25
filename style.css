@@ -864,3 +864,20 @@ tr:last-child td {
   font-size: 1.2rem;
   color: var(--blue);
 }
+
+.phone-row {
+  display: grid;
+  grid-template-columns: minmax(170px, 240px) 1fr;
+  gap: 10px;
+}
+
+.phone-row select,
+.phone-row input {
+  width: 100%;
+}
+
+@media (max-width: 700px) {
+  .phone-row {
+    grid-template-columns: 1fr;
+  }
+}
