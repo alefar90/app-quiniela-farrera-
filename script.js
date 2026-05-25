@@ -1762,7 +1762,26 @@ function AdminTab({ participants, realResults, setRealResults }) {
     React.createElement(AdminSummary, { participants: participants, realResults: realResults })), /*#__PURE__*/
    
  React.createElement("div", { className: "card" },
-  React.createElement("h3", null, "Administrar participantes"),
+  React.createElement("div", { className: "admin-section-title" },
+    React.createElement("h3", null, "Administrar participantes"),
+    React.createElement("button", {
+      className: "btn ghost",
+      onClick: () =>
+        downloadFile(
+          "participantes.csv",
+          toCSV(participants.map(p => ({
+            nombre: p.name || "",
+            alias: p.alias || "",
+            telefono: p.phone || "",
+            correo: p.email || "",
+            estado: p.locked ? "Enviado" : "Pendiente",
+            fechaEnvio: p.submittedAt || p.submitted_at || ""
+          }))),
+          "text/csv"
+        )
+    }, "Exportar participantes CSV")
+  ),
+
   participants.length === 0
     ? React.createElement("p", { className: "small" }, "No hay participantes registrados.")
     : React.createElement("div", { className: "table-wrap" },
