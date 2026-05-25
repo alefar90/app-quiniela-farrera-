@@ -781,10 +781,13 @@ const [form, setForm] = useState({
       alert("Este participante ya envió sus pronósticos y no puede modificar su registro.");
       return;
     }
-
+    const phoneNumber = form.phone.trim();
+    const fullPhone = phoneNumber ? `${form.phoneCode} ${phoneNumber}` : "";
+    
     const participant = {
       id: (current === null || current === void 0 ? void 0 : current.id) || crypto.randomUUID(),
       ...form,
+      phone: fullPhone,
       predictions: (current === null || current === void 0 ? void 0 : current.predictions) || createEmptyPredictions(),
       locked: (current === null || current === void 0 ? void 0 : current.locked) || false,
       submittedAt: (current === null || current === void 0 ? void 0 : current.submittedAt) || "" };
@@ -829,8 +832,20 @@ alert("Enhorabuena, ya estás registrado y puedes unirte al grupo en WhatsApp.")
 
 
     React.createElement("div", { className: "form-row" }, /*#__PURE__*/
-    React.createElement("label", null, "Tel\xE9fono"), /*#__PURE__*/
-    React.createElement("input", { value: form.phone, onChange: e => updateField("phone", e.target.value) })), /*#__PURE__*/
+    React.createElement("label", null, "Teléfono"), /*#__PURE__*/
+    React.createElement("div", { className: "phone-row" }, /*#__PURE__*/
+    React.createElement("select", {
+      value: form.phoneCode,
+      onChange: e => updateField("phoneCode", e.target.value)
+    },
+    PHONE_COUNTRY_CODES.map((country) => /*#__PURE__*/
+    React.createElement("option", { key: country.label, value: country.value }, country.label)
+    )), /*#__PURE__*/
+    React.createElement("input", {
+      value: form.phone,
+      onChange: e => updateField("phone", e.target.value),
+      placeholder: "Número"
+    }))),
 
 
     React.createElement("div", { className: "form-row" }, /*#__PURE__*/
