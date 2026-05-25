@@ -1452,7 +1452,17 @@ function AdminResultsEditor({ realResults, setRealResults }) {
 
 
   }
+function clearResult(matchId) {
+  const confirmed = confirm("¿Borrar el resultado real de este partido?");
 
+  if (!confirmed) return;
+
+  setRealResults(prev => {
+    const updatedResults = { ...prev };
+    delete updatedResults[matchId];
+    return updatedResults;
+  });
+}
   return /*#__PURE__*/(
     React.createElement("div", null, /*#__PURE__*/
     React.createElement("div", { className: "form-row" }, /*#__PURE__*/
@@ -1501,7 +1511,11 @@ function AdminResultsEditor({ realResults, setRealResults }) {
           checked: Boolean(result.finished),
           onChange: e => updateResult(match.id, "finished", e.target.checked) }),
         " ", "Partido finalizado"), /*#__PURE__*/
-
+        React.createElement("button", {
+          className: "btn ghost",
+          type: "button",
+          onClick: () => clearResult(match.id)
+        }, "Borrar resultado"), /*#__PURE__*/
 
 
         React.createElement("span", null, "1X2 real:",
