@@ -1558,7 +1558,7 @@ function clearResult(matchId) {
       alert("No se pudieron guardar los resultados reales.");
     }
   }
-}, "Guardar resultados reales")
+}, "Guardar resultados reales"), /*#__PURE__*/
 
 
 
