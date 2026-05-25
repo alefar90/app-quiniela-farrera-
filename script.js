@@ -236,7 +236,21 @@ async function saveParticipantToAPI(participant) {
 
   return response.json();
 }
+async function saveRealResultsToAPI(realResults) {
+  const response = await fetch(`${API_URL}/real-results`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(realResults)
+  });
 
+  if (!response.ok) {
+    throw new Error("No se pudieron guardar los resultados reales");
+  }
+
+  return response.json();
+}
 function getBrowserTimeZone() {
   return Intl.DateTimeFormat().resolvedOptions().timeZone || "America/New_York";
 }
@@ -1533,7 +1547,18 @@ function clearResult(matchId) {
 
 
     React.createElement("div", { className: "actions", style: { marginTop: 14 } }, /*#__PURE__*/
-    React.createElement("button", { className: "btn", onClick: () => saveToStorage(STORAGE_KEYS.realResults, realResults) }, "Guardar resultados reales"), /*#__PURE__*/
+    React.createElement("button", {
+  className: "btn",
+  onClick: async () => {
+    try {
+      await saveRealResultsToAPI(realResults);
+      alert("Resultados reales guardados correctamente.");
+    } catch (error) {
+      console.error("Error guardando resultados reales:", error);
+      alert("No se pudieron guardar los resultados reales.");
+    }
+  }
+}, "Guardar resultados reales")
 
 
 
