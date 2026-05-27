@@ -484,11 +484,15 @@ function calculateParticipantTotal(participant, realResults, rules = SCORING_RUL
 
       return acc;
     },
-    {
+        {
       points: 0,
       correct1x2: 0,
       exactScores: 0,
-      correctGoalDifferences: 0
+      correctGoalDifferences: 0,
+      position1Hits: 0,
+      position2Hits: 0,
+      position3Hits: 0,
+      position4Hits: 0
     }
   );
 }
@@ -1363,11 +1367,14 @@ function LeaderboardTable({ leaderboard }) {
     React.createElement("th", null, "Posici\xF3n"), /*#__PURE__*/
     React.createElement("th", null, "Participante"), /*#__PURE__*/
     React.createElement("th", null, "Alias"), /*#__PURE__*/
-    React.createElement("th", null, "Puntos"), /*#__PURE__*/
-    React.createElement("th", null, "Aciertos 1X2"), /*#__PURE__*/
-    React.createElement("th", null, "Exactos"), /*#__PURE__*/
-    React.createElement("th", null, "Diferencias"))), /*#__PURE__*/
-
+    React.createElement("th", null, "Puntos"),
+    React.createElement("th", null, "Aciertos 1X2"),
+    React.createElement("th", null, "Exactos"),
+    React.createElement("th", null, "Diferencias"),
+    React.createElement("th", null, "Pos. 1°"),
+    React.createElement("th", null, "Pos. 2°"),
+    React.createElement("th", null, "Pos. 3°"),
+    React.createElement("th", null, "Pos. 4°")
 
     React.createElement("tbody", null,
     leaderboard.map((participant, index) => /*#__PURE__*/
@@ -1383,12 +1390,15 @@ function LeaderboardTable({ leaderboard }) {
     React.createElement("td", null, participant.name), /*#__PURE__*/
     React.createElement("td", null, participant.alias || "—"), /*#__PURE__*/
     React.createElement("td", null, /*#__PURE__*/
-    React.createElement("strong", null, participant.totals.points)), /*#__PURE__*/
-
+    React.createElement("td", null, participant.totals.points), /*#__PURE__*/
+    
     React.createElement("td", null, participant.totals.correct1x2), /*#__PURE__*/
     React.createElement("td", null, participant.totals.exactScores), /*#__PURE__*/
-    React.createElement("td", null, participant.totals.correctGoalDifferences))),
-
+    React.createElement("td", null, participant.totals.correctGoalDifferences), /*#__PURE__*/
+    React.createElement("td", null, participant.totals.position1Hits || 0), /*#__PURE__*/
+    React.createElement("td", null, participant.totals.position2Hits || 0), /*#__PURE__*/
+    React.createElement("td", null, participant.totals.position3Hits || 0), /*#__PURE__*/
+    React.createElement("td", null, participant.totals.position4Hits || 0)
 
 
     !leaderboard.length && /*#__PURE__*/
