@@ -1590,11 +1590,12 @@ function ExactScoresRankingTable({ leaderboard }) {
 
 function RankingTab({ participants, realResults, realGroupStandings }) {
   const leaderboard = useMemo(
-  () => calculateLeaderboard(participants, realResults, realGroupStandings),
-  [participants, realResults, realGroupStandings]
-
+    () => calculateLeaderboard(participants, realResults, realGroupStandings),
+    [participants, realResults, realGroupStandings]
+  );
 
   return /*#__PURE__*/(
+    
     React.createElement("section", { className: "card" }, /*#__PURE__*/
     React.createElement("div", { className: "admin-section-title" }, /*#__PURE__*/
     React.createElement("div", null, /*#__PURE__*/
@@ -2284,11 +2285,11 @@ setParticipants(parsedParticipants);
     React.createElement(DailyPredictionsTab, { participants: participants }),
 
     activeTab === "Ranking" && /*#__PURE__*/
-    React.createElement(RankingTab, {
+React.createElement(RankingTab, {
   participants: participants,
   realResults: realResults,
   realGroupStandings: realGroupStandings
-})
+}), /*#__PURE__*/
 
 activeTab === "Administrador" && /*#__PURE__*/
 React.createElement(AdminTab, {
@@ -2300,7 +2301,5 @@ React.createElement(AdminTab, {
 )
 ));
 }
-
-ReactDOM.createRoot(document.getElementById("root")).render( /*#__PURE__*/React.createElement(App, null));
 
 ReactDOM.createRoot(document.getElementById("root")).render( /*#__PURE__*/React.createElement(App, null));
