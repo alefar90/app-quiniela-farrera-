@@ -36,6 +36,7 @@ const STORAGE_KEYS = {
   participants: "qf_participants_v3",
   currentParticipantId: "qf_current_participant_id_v3",
   realResults: "qf_real_results_v3",
+  realGroupStandings: "qf_real_group_standings_v3",
   adminSession: "qf_admin_session_v3" };
 
 
@@ -584,6 +585,84 @@ function createEmptyResults() {
     return acc;
   }, {});
 }
+function createEmptyGroupStandings() {
+  return Object.keys(WORLD_CUP_GROUPS).reduce((acc, group) => {
+    acc[group] = {
+      1: "",
+      2: "",
+      3: "",
+      4: ""
+    };
+
+    return acc;
+  }, {});
+}
+
+function AdminGroupStandingsEditor({ realGroupStandings, setRealGroupStandings }) {
+  function updateStanding(group, position, team) {
+    setRealGroupStandings(prev => ({
+      ...prev,
+      [group]: {
+        ...(prev[group] || {}),
+        [position]: team
+      }
+    }));
+  }
+
+  function clearGroup(group) {
+    const confirmed = confirm(`¿Borrar las posiciones reales del Grupo ${group}?`);
+
+    if (!confirmed) return;
+
+    setRealGroupStandings(prev => ({
+      ...prev,
+      [group]: {
+        1: "",
+        2: "",
+        3: "",
+        4: ""
+      }
+    }));
+  }
+
+  return /*#__PURE__*/(
+    React.createElement("div", { className: "grid" },
+      Object.keys(WORLD_CUP_GROUPS).map(group => {
+        const teams = WORLD_CUP_GROUPS[group];
+        const groupStanding = realGroupStandings[group] || {};
+
+        return /*#__PURE__*/(
+          React.createElement("div", { className: "card-soft", key: group }, /*#__PURE__*/
+            React.createElement("div", { className: "admin-section-title" }, /*#__PURE__*/
+              React.createElement("h4", null, "Grupo ", group), /*#__PURE__*/
+              React.createElement("button", {
+                className: "btn ghost",
+                type: "button",
+                onClick: () => clearGroup(group)
+              }, "Borrar")
+            ), /*#__PURE__*/
+
+            [1, 2, 3, 4].map(position => /*#__PURE__*/
+              React.createElement("div", { className: "form-row", key: position }, /*#__PURE__*/
+                React.createElement("label", null, position, "° lugar"), /*#__PURE__*/
+                React.createElement("select", {
+                  value: groupStanding[position] || "",
+                  onChange: e => updateStanding(group, position, e.target.value)
+                }, /*#__PURE__*/
+                  React.createElement("option", { value: "" }, "Seleccionar equipo"),
+                  teams.map(team => /*#__PURE__*/
+                    React.createElement("option", { key: team, value: team }, team)
+                  )
+                )
+              )
+            )
+          )
+        );
+      })
+    )
+  );
+}
+
 
 function downloadFile(filename, content, type = "application/json") {
   const blob = new Blob([content], { type });
@@ -1896,7 +1975,7 @@ function clearResult(matchId) {
 
 }
 
-function AdminTab({ participants, realResults, setRealResults }) {
+function AdminTab({ participants, realResults, setRealResults, realGroupStandings, setRealGroupStandings }) {
   const [isAdmin, setIsAdmin] = useState(
   sessionStorage.getItem(STORAGE_KEYS.adminSession) === "true");
 
@@ -2057,6 +2136,19 @@ function AdminTab({ participants, realResults, setRealResults }) {
     React.createElement("div", { className: "card" }, /*#__PURE__*/
     React.createElement("h3", null, "Resultados reales"), /*#__PURE__*/
     React.createElement(AdminResultsEditor, { realResults: realResults, setRealResults: setRealResults })), /*#__PURE__*/
+    React.createElement("div", { className: "card" }, /*#__PURE__*/
+      React.createElement("h3", null, "Posiciones reales por grupo"), /*#__PURE__*/
+      React.createElement(
+        "p",
+        { className: "small" },
+        "Selecciona manualmente cómo quedó cada grupo. Estos datos se usarán para calcular puntos por posición exacta."
+      ), /*#__PURE__*/
+      React.createElement(AdminGroupStandingsEditor, {
+        realGroupStandings: realGroupStandings,
+        setRealGroupStandings: setRealGroupStandings
+      })
+    ), /*#__PURE__*/
+                        
 
 
     React.createElement("div", { className: "card" }, /*#__PURE__*/
@@ -2087,6 +2179,9 @@ const [participants, setParticipants] = useState([]);
   const [realResults, setRealResults] = useState(() => ({
     ...createEmptyResults(),
     ...loadFromStorage(STORAGE_KEYS.realResults, {}) }));
+  const [realGroupStandings, setRealGroupStandings] = useState(() => ({
+  ...createEmptyGroupStandings(),
+  ...loadFromStorage(STORAGE_KEYS.realGroupStandings, {}) }));
 
   const [currentParticipantId, setCurrentParticipantId] = useState(
   () => localStorage.getItem(STORAGE_KEYS.currentParticipantId) || "");
@@ -2118,6 +2213,7 @@ setParticipants(parsedParticipants);
 
   loadParticipants();
 }, []);  useEffect(() => saveToStorage(STORAGE_KEYS.realResults, realResults), [realResults]);
+  useEffect(() => saveToStorage(STORAGE_KEYS.realGroupStandings, realGroupStandings), [realGroupStandings]);
 
   return /*#__PURE__*/(
     React.createElement("div", { className: "app-shell" }, /*#__PURE__*/
@@ -2159,8 +2255,10 @@ setParticipants(parsedParticipants);
     React.createElement(AdminTab, {
       participants: participants,
       realResults: realResults,
-      setRealResults: setRealResults }))));
-
+      setRealResults: setRealResults,
+      realGroupStandings: realGroupStandings,
+      setRealGroupStandings: setRealGroupStandings })
+    
 
 
 
