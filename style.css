@@ -925,8 +925,26 @@ tr:last-child td {
 }
 
 @media (max-width: 700px) {
+  .countdown-card {
+    padding: 18px;
+  }
+
   .countdown-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(4, minmax(70px, 1fr));
+    gap: 8px;
+  }
+
+  .countdown-item {
+    padding: 10px 6px;
+    border-radius: 14px;
+  }
+
+  .countdown-item strong {
+    font-size: 1.55rem;
+  }
+
+  .countdown-item span {
+    font-size: 0.78rem;
   }
 }
 
