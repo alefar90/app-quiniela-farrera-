@@ -2250,19 +2250,17 @@ setParticipants(parsedParticipants);
     activeTab === "Ranking" && /*#__PURE__*/
     React.createElement(RankingTab, { participants: participants, realResults: realResults }),
 
-
-    activeTab === "Administrador" && /*#__PURE__*/
-    React.createElement(AdminTab, {
-      participants: participants,
-      realResults: realResults,
-      setRealResults: setRealResults,
-      realGroupStandings: realGroupStandings,
-      setRealGroupStandings: setRealGroupStandings })
-    
-
-
-
-
+activeTab === "Administrador" && /*#__PURE__*/
+React.createElement(AdminTab, {
+  participants: participants,
+  realResults: realResults,
+  setRealResults: setRealResults,
+  realGroupStandings: realGroupStandings,
+  setRealGroupStandings: setRealGroupStandings })
+)
+));
 }
+
+ReactDOM.createRoot(document.getElementById("root")).render( /*#__PURE__*/React.createElement(App, null));
 
 ReactDOM.createRoot(document.getElementById("root")).render( /*#__PURE__*/React.createElement(App, null));
