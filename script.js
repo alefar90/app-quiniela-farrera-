@@ -1361,55 +1361,61 @@ function PredictionsTab({ participants, setParticipants, currentParticipantId })
 function LeaderboardTable({ leaderboard }) {
   return /*#__PURE__*/(
     React.createElement("div", { className: "table-wrap" }, /*#__PURE__*/
-    React.createElement("table", null, /*#__PURE__*/
-    React.createElement("thead", null, /*#__PURE__*/
-    React.createElement("tr", null, /*#__PURE__*/
-    React.createElement("th", null, "Posici\xF3n"), /*#__PURE__*/
-    React.createElement("th", null, "Participante"), /*#__PURE__*/
-    React.createElement("th", null, "Alias"), /*#__PURE__*/
-    React.createElement("th", null, "Puntos"),
-    React.createElement("th", null, "Aciertos 1X2"),
-    React.createElement("th", null, "Exactos"),
-    React.createElement("th", null, "Diferencias"),
-    React.createElement("th", null, "Pos. 1°"),
-    React.createElement("th", null, "Pos. 2°"),
-    React.createElement("th", null, "Pos. 3°"),
-    React.createElement("th", null, "Pos. 4°")
+      React.createElement("table", null, /*#__PURE__*/
+        React.createElement("thead", null, /*#__PURE__*/
+          React.createElement("tr", null, /*#__PURE__*/
+            React.createElement("th", null, "Posición"), /*#__PURE__*/
+            React.createElement("th", null, "Participante"), /*#__PURE__*/
+            React.createElement("th", null, "Alias"), /*#__PURE__*/
+            React.createElement("th", null, "Puntos"), /*#__PURE__*/
+            React.createElement("th", null, "Aciertos 1X2"), /*#__PURE__*/
+            React.createElement("th", null, "Exactos"), /*#__PURE__*/
+            React.createElement("th", null, "Diferencias"), /*#__PURE__*/
+            React.createElement("th", null, "Pos. 1°"), /*#__PURE__*/
+            React.createElement("th", null, "Pos. 2°"), /*#__PURE__*/
+            React.createElement("th", null, "Pos. 3°"), /*#__PURE__*/
+            React.createElement("th", null, "Pos. 4°")
+          )
+        ), /*#__PURE__*/
 
-    React.createElement("tbody", null,
-    leaderboard.map((participant, index) => /*#__PURE__*/
-    React.createElement("tr", {
-      key: participant.id,
-      className:
-        index === 0 ? "rank-gold" :
-        index === 1 ? "rank-silver" :
-        index === 2 ? "rank-bronze" :
-        ""
-    }, /*#__PURE__*/
-    React.createElement("td", null, index + 1), /*#__PURE__*/
-    React.createElement("td", null, participant.name), /*#__PURE__*/
-    React.createElement("td", null, participant.alias || "—"), /*#__PURE__*/
-    React.createElement("td", null, /*#__PURE__*/
-    React.createElement("td", null, participant.totals.points), /*#__PURE__*/
-    
-    React.createElement("td", null, participant.totals.correct1x2), /*#__PURE__*/
-    React.createElement("td", null, participant.totals.exactScores), /*#__PURE__*/
-    React.createElement("td", null, participant.totals.correctGoalDifferences), /*#__PURE__*/
-    React.createElement("td", null, participant.totals.position1Hits || 0), /*#__PURE__*/
-    React.createElement("td", null, participant.totals.position2Hits || 0), /*#__PURE__*/
-    React.createElement("td", null, participant.totals.position3Hits || 0), /*#__PURE__*/
-    React.createElement("td", null, participant.totals.position4Hits || 0)
+        React.createElement("tbody", null,
+          leaderboard.map((participant, index) => /*#__PURE__*/
+            React.createElement("tr", {
+              key: participant.id,
+              className:
+                index === 0 ? "rank-gold" :
+                index === 1 ? "rank-silver" :
+                index === 2 ? "rank-bronze" :
+                ""
+            }, /*#__PURE__*/
+              React.createElement("td", null, index + 1), /*#__PURE__*/
+              React.createElement("td", null, participant.name), /*#__PURE__*/
+              React.createElement("td", null, participant.alias || "—"), /*#__PURE__*/
+              React.createElement("td", null, /*#__PURE__*/
+                React.createElement("strong", null, participant.totals.points)
+              ), /*#__PURE__*/
+              React.createElement("td", null, participant.totals.correct1x2), /*#__PURE__*/
+              React.createElement("td", null, participant.totals.exactScores), /*#__PURE__*/
+              React.createElement("td", null, participant.totals.correctGoalDifferences), /*#__PURE__*/
+              React.createElement("td", null, participant.totals.position1Hits || 0), /*#__PURE__*/
+              React.createElement("td", null, participant.totals.position2Hits || 0), /*#__PURE__*/
+              React.createElement("td", null, participant.totals.position3Hits || 0), /*#__PURE__*/
+              React.createElement("td", null, participant.totals.position4Hits || 0)
+            )
+          ),
 
-
-    !leaderboard.length && /*#__PURE__*/
-    React.createElement("tr", null, /*#__PURE__*/
-    React.createElement("td", { colSpan: "7" }, "A\xFAn no hay participantes con pron\xF3sticos enviados."))))));
-
-
-
-
-
-
+          !leaderboard.length && /*#__PURE__*/
+            React.createElement("tr", null, /*#__PURE__*/
+              React.createElement(
+                "td",
+                { colSpan: "11" },
+                "Aún no hay participantes con pronósticos enviados."
+              )
+            )
+        )
+      )
+    )
+  );
 }
 
 function ExactScoresRankingTable({ leaderboard }) {
