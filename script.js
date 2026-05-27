@@ -465,8 +465,8 @@ function calculateMatchPoints(prediction, realResult, rules = SCORING_RULES) {
   return { points, correct1x2, exactScore, correctGoalDifference };
 }
 
-function calculateParticipantTotal(participant, realResults, rules = SCORING_RULES) {
-  return MATCHES.reduce(
+function calculateParticipantTotal(participant, realResults, realGroupStandings = {}, rules = SCORING_RULES) {
+  const totals = MATCHES.reduce(
     (acc, match) => {
       const prediction =
         participant.predictions?.[match.id] ||
@@ -485,7 +485,7 @@ function calculateParticipantTotal(participant, realResults, rules = SCORING_RUL
 
       return acc;
     },
-        {
+    {
       points: 0,
       correct1x2: 0,
       exactScores: 0,
@@ -496,21 +496,57 @@ function calculateParticipantTotal(participant, realResults, rules = SCORING_RUL
       position4Hits: 0
     }
   );
+
+  Object.keys(WORLD_CUP_GROUPS).forEach(group => {
+    const realStanding = realGroupStandings?.[group] || {};
+    const projectedStanding = calculatePredictedGroupStandings(group, participant.predictions || {});
+
+    [1, 2, 3, 4].forEach(position => {
+      const realTeam = realStanding[position];
+      const predictedTeam = projectedStanding[position - 1]?.team;
+
+      if (!realTeam || !predictedTeam) return;
+
+      if (realTeam === predictedTeam) {
+        if (position === 1) {
+          totals.position1Hits += 1;
+          totals.points += rules.groupStage.exactGroupPosition1;
+        }
+
+        if (position === 2) {
+          totals.position2Hits += 1;
+          totals.points += rules.groupStage.exactGroupPosition2;
+        }
+
+        if (position === 3) {
+          totals.position3Hits += 1;
+          totals.points += rules.groupStage.exactGroupPosition3;
+        }
+
+        if (position === 4) {
+          totals.position4Hits += 1;
+          totals.points += rules.groupStage.exactGroupPosition4;
+        }
+      }
+    });
+  });
+
+  return totals;
 }
 
-function calculateLeaderboard(participants, realResults, rules = SCORING_RULES) {
-  return participants.
-  filter(p => p.locked).
-  map(p => ({
-    ...p,
-    totals: calculateParticipantTotal(p, realResults, rules) })).
-
-  sort(
-  (a, b) =>
-  b.totals.points - a.totals.points ||
-  b.totals.exactScores - a.totals.exactScores ||
-  a.name.localeCompare(b.name));
-
+function calculateLeaderboard(participants, realResults, realGroupStandings = {}, rules = SCORING_RULES) {
+  return participants
+    .filter(p => p.locked)
+    .map(p => ({
+      ...p,
+      totals: calculateParticipantTotal(p, realResults, realGroupStandings, rules)
+    }))
+    .sort(
+      (a, b) =>
+        b.totals.points - a.totals.points ||
+        b.totals.exactScores - a.totals.exactScores ||
+        a.name.localeCompare(b.name)
+    );
 }
 
 function buildAdminPredictionsMatrix(participants, matches) {
@@ -1552,10 +1588,10 @@ function ExactScoresRankingTable({ leaderboard }) {
   );
 }
 
-function RankingTab({ participants, realResults }) {
+function RankingTab({ participants, realResults, realGroupStandings }) {
   const leaderboard = useMemo(
-  () => calculateLeaderboard(participants, realResults),
-  [participants, realResults]);
+  () => calculateLeaderboard(participants, realResults, realGroupStandings),
+  [participants, realResults, realGroupStandings]
 
 
   return /*#__PURE__*/(
@@ -1986,7 +2022,7 @@ function AdminTab({ participants, realResults, setRealResults, realGroupStanding
   }
 
   const sentParticipants = participants.filter(p => p.locked);
-  const leaderboard = calculateLeaderboard(participants, realResults);
+  const leaderboard = calculateLeaderboard(participants, realResults, realGroupStandings);
   async function deleteParticipant(id, alias) {
   const confirmDelete = confirm(
     `¿Eliminar al participante ${alias || id}? Esta acción no se puede deshacer.`
@@ -2248,7 +2284,11 @@ setParticipants(parsedParticipants);
     React.createElement(DailyPredictionsTab, { participants: participants }),
 
     activeTab === "Ranking" && /*#__PURE__*/
-    React.createElement(RankingTab, { participants: participants, realResults: realResults }),
+    React.createElement(RankingTab, {
+  participants: participants,
+  realResults: realResults,
+  realGroupStandings: realGroupStandings
+})
 
 activeTab === "Administrador" && /*#__PURE__*/
 React.createElement(AdminTab, {
