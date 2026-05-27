@@ -53,6 +53,7 @@ const HOST_CITIES = [
 { city: "Atlanta", country: "Estados Unidos", timeZone: "America/New_York", stadium: "Mercedes-Benz Stadium" },
 { city: "Houston", country: "Estados Unidos", timeZone: "America/Chicago", stadium: "NRG Stadium" }];
 
+const WORLD_CUP_START_AT = "2026-06-11T15:00:00-04:00";
 const PHONE_COUNTRY_CODES = [
   { label: "🇺🇸/🇨🇦 +1", value: "+1" },
   { label: "🇻🇪 +58", value: "+58" },
@@ -348,7 +349,18 @@ function getPhoneCodeFromTimeZone(timeZone) {
   return map[timeZone] || "+1";
 }
 
+function getCountdownParts(targetDate) {
+  const target = new Date(targetDate).getTime();
+  const now = new Date().getTime();
+  const diff = Math.max(target - now, 0);
 
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  const minutes = Math.floor((diff / (1000 * 60)) % 60);
+  const seconds = Math.floor((diff / 1000) % 60);
+
+  return { days, hours, minutes, seconds };
+}
 function getBrowserTimeZone() {
   return Intl.DateTimeFormat().resolvedOptions().timeZone || "America/New_York";
 }
@@ -662,6 +674,41 @@ function ScoringRulesTable() {
 
 }
 
+function CountdownCard() {
+  const [countdown, setCountdown] = useState(() => getCountdownParts(WORLD_CUP_START_AT));
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCountdown(getCountdownParts(WORLD_CUP_START_AT));
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return /*#__PURE__*/(
+    React.createElement("div", { className: "countdown-card" }, /*#__PURE__*/
+      React.createElement("div", { className: "countdown-title" }, "Cuenta regresiva al Mundial 2026"), /*#__PURE__*/
+      React.createElement("div", { className: "countdown-grid" }, /*#__PURE__*/
+        React.createElement("div", { className: "countdown-item" }, /*#__PURE__*/
+          React.createElement("strong", null, countdown.days), /*#__PURE__*/
+          React.createElement("span", null, "Días")
+        ), /*#__PURE__*/
+        React.createElement("div", { className: "countdown-item" }, /*#__PURE__*/
+          React.createElement("strong", null, String(countdown.hours).padStart(2, "0")), /*#__PURE__*/
+          React.createElement("span", null, "Horas")
+        ), /*#__PURE__*/
+        React.createElement("div", { className: "countdown-item" }, /*#__PURE__*/
+          React.createElement("strong", null, String(countdown.minutes).padStart(2, "0")), /*#__PURE__*/
+          React.createElement("span", null, "Minutos")
+        ), /*#__PURE__*/
+        React.createElement("div", { className: "countdown-item" }, /*#__PURE__*/
+          React.createElement("strong", null, String(countdown.seconds).padStart(2, "0")), /*#__PURE__*/
+          React.createElement("span", null, "Segundos")
+        )
+      )
+    )
+  );
+}
 function HomeTab({ setActiveTab }) {
   return /*#__PURE__*/(
     React.createElement("section", { className: "grid" }, /*#__PURE__*/
@@ -681,6 +728,8 @@ function HomeTab({ setActiveTab }) {
           )
         )
       ), /*#__PURE__*/
+
+    React.createElement(CountdownCard, null), /*#__PURE__*/
     React.createElement("div", { className: "card" },
     React.createElement("h2", null, "Cómo jugar"),
     React.createElement(
