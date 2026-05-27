@@ -881,3 +881,51 @@ tr:last-child td {
     grid-template-columns: 1fr;
   }
 }
+
+.countdown-card {
+  background: linear-gradient(135deg, #092f6f, #d71920);
+  color: white;
+  border-radius: 22px;
+  padding: 22px;
+  box-shadow: 0 12px 30px rgba(9, 47, 111, 0.18);
+  margin-bottom: 24px;
+}
+
+.countdown-title {
+  font-weight: 900;
+  font-size: 1.25rem;
+  margin-bottom: 14px;
+}
+
+.countdown-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(90px, 1fr));
+  gap: 12px;
+}
+
+.countdown-item {
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 16px;
+  padding: 14px;
+  text-align: center;
+}
+
+.countdown-item strong {
+  display: block;
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.countdown-item span {
+  display: block;
+  margin-top: 6px;
+  font-weight: 700;
+  opacity: 0.92;
+}
+
+@media (max-width: 700px) {
+  .countdown-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
