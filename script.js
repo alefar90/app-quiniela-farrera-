@@ -2083,13 +2083,37 @@ function AdminTab({ participants, realResults, setRealResults, realGroupStanding
       onClick: () =>
         downloadFile(
           "participantes.csv",
-          toCSV(participants.map(p => ({
-            nombre: p.name || "",
-            alias: p.alias || "",
-            telefono: p.phone || "",
-            correo: p.email || "",
-            estado: p.locked ? "Enviado" : "Pendiente",
-            fechaEnvio: p.submittedAt || p.submitted_at || ""
+          toCSV(participants.map(p => {
+            const row = {
+              nombre: p.name || "",
+              alias: p.alias || "",
+              telefono: p.phone || "",
+              correo: p.email || "",
+              estado: p.locked ? "Enviado" : "Pendiente",
+              fechaEnvio: p.submittedAt || p.submitted_at || ""
+            };
+          
+            MATCHES.forEach(match => {
+              const prediction =
+                p.predictions?.[match.id] ||
+                p.predictions?.[match.label];
+          
+              row[`Pronóstico ${match.label}`] = isCompleteScore(prediction)
+                ? `${prediction.homeGoals}-${prediction.awayGoals}`
+                : "";
+            });
+          
+            Object.keys(WORLD_CUP_GROUPS).forEach(group => {
+              const projectedStanding = calculatePredictedGroupStandings(group, p.predictions || {});
+          
+              row[`Grupo ${group} Pos. 1 pronosticada`] = projectedStanding[0]?.team || "";
+              row[`Grupo ${group} Pos. 2 pronosticada`] = projectedStanding[1]?.team || "";
+              row[`Grupo ${group} Pos. 3 pronosticada`] = projectedStanding[2]?.team || "";
+              row[`Grupo ${group} Pos. 4 pronosticada`] = projectedStanding[3]?.team || "";
+            });
+          
+            return row;
+          }))
           }))),
           "text/csv"
         )
