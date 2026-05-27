@@ -1037,6 +1037,137 @@ function MatchesTab({ participants, currentParticipantId }) {
   );
 }
 
+function calculatePredictedGroupStandings(group, predictions) {
+  const teams = WORLD_CUP_GROUPS[group];
+
+  const standings = teams.reduce((acc, team) => {
+    acc[team] = {
+      team,
+      played: 0,
+      won: 0,
+      drawn: 0,
+      lost: 0,
+      goalsFor: 0,
+      goalsAgainst: 0,
+      goalDifference: 0,
+      points: 0
+    };
+
+    return acc;
+  }, {});
+
+  const groupMatches = MATCHES.filter(match => match.group === group);
+
+  groupMatches.forEach(match => {
+    const prediction = predictions?.[match.id];
+
+    if (!isCompleteScore(prediction)) return;
+
+    const homeGoals = Number(prediction.homeGoals);
+    const awayGoals = Number(prediction.awayGoals);
+
+    const home = standings[match.homeTeam];
+    const away = standings[match.awayTeam];
+
+    if (!home || !away) return;
+
+    home.played += 1;
+    away.played += 1;
+
+    home.goalsFor += homeGoals;
+    home.goalsAgainst += awayGoals;
+    away.goalsFor += awayGoals;
+    away.goalsAgainst += homeGoals;
+
+    if (homeGoals > awayGoals) {
+      home.won += 1;
+      away.lost += 1;
+      home.points += 3;
+    } else if (homeGoals < awayGoals) {
+      away.won += 1;
+      home.lost += 1;
+      away.points += 3;
+    } else {
+      home.drawn += 1;
+      away.drawn += 1;
+      home.points += 1;
+      away.points += 1;
+    }
+  });
+
+  return Object.values(standings)
+    .map(row => ({
+      ...row,
+      goalDifference: row.goalsFor - row.goalsAgainst
+    }))
+    .sort((a, b) =>
+      b.points - a.points ||
+      b.goalDifference - a.goalDifference ||
+      b.goalsFor - a.goalsFor ||
+      a.team.localeCompare(b.team)
+    );
+}
+
+function PredictedGroupStandingsTable({ group, predictions }) {
+  const standings = calculatePredictedGroupStandings(group, predictions);
+  const completedMatches = MATCHES
+    .filter(match => match.group === group)
+    .filter(match => isCompleteScore(predictions?.[match.id]))
+    .length;
+
+  return /*#__PURE__*/(
+    React.createElement("div", { className: "predicted-standings card-soft" }, /*#__PURE__*/
+      React.createElement("div", { className: "admin-section-title" }, /*#__PURE__*/
+        React.createElement("div", null, /*#__PURE__*/
+          React.createElement("h3", null, "Tabla proyectada del Grupo ", group), /*#__PURE__*/
+          React.createElement(
+            "p",
+            { className: "small" },
+            "Según tus pronósticos, así quedaría este grupo. Revísalo antes de guardar o enviar."
+          )
+        ), /*#__PURE__*/
+        React.createElement("span", { className: "badge" }, completedMatches, "/6 partidos")
+      ), /*#__PURE__*/
+
+      React.createElement("div", { className: "table-wrap" }, /*#__PURE__*/
+        React.createElement("table", { className: "standings-table" }, /*#__PURE__*/
+          React.createElement("thead", null, /*#__PURE__*/
+            React.createElement("tr", null, /*#__PURE__*/
+              React.createElement("th", null, "Pos."), /*#__PURE__*/
+              React.createElement("th", null, "Equipo"), /*#__PURE__*/
+              React.createElement("th", null, "PJ"), /*#__PURE__*/
+              React.createElement("th", null, "PG"), /*#__PURE__*/
+              React.createElement("th", null, "PE"), /*#__PURE__*/
+              React.createElement("th", null, "PP"), /*#__PURE__*/
+              React.createElement("th", null, "GF"), /*#__PURE__*/
+              React.createElement("th", null, "GC"), /*#__PURE__*/
+              React.createElement("th", null, "DG"), /*#__PURE__*/
+              React.createElement("th", null, "Pts")
+            )
+          ), /*#__PURE__*/
+
+          React.createElement("tbody", null,
+            standings.map((row, index) => /*#__PURE__*/
+              React.createElement("tr", { key: row.team }, /*#__PURE__*/
+                React.createElement("td", null, index + 1), /*#__PURE__*/
+                React.createElement("td", null, React.createElement("strong", null, row.team)), /*#__PURE__*/
+                React.createElement("td", null, row.played), /*#__PURE__*/
+                React.createElement("td", null, row.won), /*#__PURE__*/
+                React.createElement("td", null, row.drawn), /*#__PURE__*/
+                React.createElement("td", null, row.lost), /*#__PURE__*/
+                React.createElement("td", null, row.goalsFor), /*#__PURE__*/
+                React.createElement("td", null, row.goalsAgainst), /*#__PURE__*/
+                React.createElement("td", null, row.goalDifference), /*#__PURE__*/
+                React.createElement("td", null, React.createElement("strong", null, row.points))
+              )
+            )
+          )
+        )
+      )
+    )
+  );
+}
+
 function PredictionMatchCard({ match, prediction, locked, onChange }) {var _prediction$homeGoals, _prediction$awayGoals;
   return /*#__PURE__*/(
     React.createElement("div", { className: "match-card" }, /*#__PURE__*/
@@ -1191,8 +1322,10 @@ function PredictionsTab({ participants, setParticipants, currentParticipantId })
           locked: locked,
           onChange: updatePrediction }));})), /*#__PURE__*/
 
-
-
+    React.createElement(PredictedGroupStandingsTable, {
+      group: groupFilter,
+      predictions: participant.predictions
+    }), /*#__PURE__*/
 
     React.createElement("div", { className: "actions", style: { marginTop: 16 } }, /*#__PURE__*/
     React.createElement("button", { className: "btn secondary", disabled: locked, onClick: saveDraft }, "Guardar borrador"), /*#__PURE__*/
