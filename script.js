@@ -3,7 +3,6 @@ const API_URL = "https://quiniela-api.alefar90.workers.dev";
 const { useEffect, useMemo, useState } = React;
 const ADMIN_PASSWORD = "";
 const ADMIN_WHATSAPP_NUMBER = "17863120172";
-const WHATSAPP_GROUP_URL = "https://chat.whatsapp.com/EviN0M7ZRG9EBjEbwYZkLO?mode=gi_t";
 
 const WORLD_CUP_GROUPS = {
   A: ["México", "Sudáfrica", "Corea del Sur", "República Checa"],
@@ -970,23 +969,27 @@ saveParticipantToAPI(participant);
     setCurrentParticipantId(participant.id);
     localStorage.setItem(STORAGE_KEYS.currentParticipantId, participant.id);
 
-alert("Enhorabuena, ya estás registrado y puedes unirte al grupo en WhatsApp.");    setActiveTab("Partidos");
+const whatsappMessage =
+  `Hola Alexander, acabo de registrarme en la Quiniela Farrera. ` +
+  `Mi nombre es: ${participant.name}. ` +
+  `Mi alias es: ${participant.alias || "—"}. ` +
+  `Mi teléfono es: ${participant.phone || "—"}. ` +
+  `Por favor agrégame manualmente al grupo oficial de WhatsApp.`;
+
+const whatsappUrl = `https://wa.me/${ADMIN_WHATSAPP_NUMBER}?text=${encodeURIComponent(whatsappMessage)}`;
+
+alert("Registro guardado correctamente. Ahora se abrirá WhatsApp para avisarle a Alexander y que pueda agregarte manualmente al grupo.");
+
+window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+
+setActiveTab("Partidos");
   }
 
   return /*#__PURE__*/(
     React.createElement("section", { className: "card" }, /*#__PURE__*/
     React.createElement("h2", null, "Registro"), /*#__PURE__*/
-    React.createElement("p", { className: "small" }, "Detectamos tu zona horaria automáticamente para mostrarte los partidos en tu hora local. Si no es correcta, puedes cambiarla."), /*#__PURE__*/    currentParticipantId && React.createElement("div", { className: "notice success" },
-      React.createElement("strong", null, "Enhorabuena, ya estás registrado."),
-      React.createElement("p", null, "Puedes unirte al grupo oficial de WhatsApp de la Quiniela Farrera."),
-      React.createElement("a", {
-        className: "btn success",
-        href: WHATSAPP_GROUP_URL,
-        target: "_blank",
-        rel: "noopener noreferrer"
-      }, "Unirme al grupo de WhatsApp")
-    ),
-
+    React.createElement("p", { className: "small" }, "Detectamos tu zona horaria automáticamente para mostrarte los partidos en tu hora local. Si no es correcta, puedes cambiarla."), /*#__PURE__*/    
+  
 
     React.createElement("form", { onSubmit: submit, className: "grid grid-2" }, /*#__PURE__*/
     React.createElement("div", { className: "form-row" }, /*#__PURE__*/
