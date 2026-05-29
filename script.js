@@ -2000,6 +2000,27 @@ function clearResult(matchId) {
   }
 }, "Guardar resultados reales"), /*#__PURE__*/
 
+React.createElement("button", {
+  className: "btn ghost",
+  type: "button",
+  onClick: async () => {
+    const confirmed = confirm("¿Borrar todos los resultados reales cargados?");
+
+    if (!confirmed) return;
+
+    const emptyResults = createEmptyResults();
+
+    setRealResults(emptyResults);
+
+    try {
+      await saveRealResultsToAPI(emptyResults);
+      alert("Todos los resultados reales fueron borrados correctamente.");
+    } catch (error) {
+      console.error("Error borrando resultados reales:", error);
+      alert("Se borraron en este dispositivo, pero no se pudieron guardar en el servidor.");
+    }
+  }
+}, "Borrar todos los resultados reales"), /*#__PURE__*/
 
 
     React.createElement("button", {
