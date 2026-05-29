@@ -1,85 +1,58 @@
-const CACHE_NAME = "quiniela-farrera-v32";
-
-const APP_SHELL = [
-  "./",
-  "./index.html",
-  "./style.css",
-  "./script.js",
-  "./manifest.json",
-  "./icon-192.png",
-  "./icon-512.png"
-];
+const CACHE_VERSION = "quiniela-farrera-v1";
+const STATIC_CACHE = CACHE_VERSION + "-static";
 
 self.addEventListener("install", event => {
   self.skipWaiting();
-
-  event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(APP_SHELL))
-  );
 });
 
 self.addEventListener("activate", event => {
   event.waitUntil(
-    caches
-      .keys()
-      .then(cacheNames =>
-        Promise.all(
-          cacheNames
-            .filter(cacheName => cacheName !== CACHE_NAME)
-            .map(cacheName => caches.delete(cacheName))
-        )
+    caches.keys().then(cacheNames =>
+      Promise.all(
+        cacheNames.map(cacheName => caches.delete(cacheName))
       )
-      .then(() => self.clients.claim())
+    ).then(() => self.clients.claim())
   );
 });
 
 self.addEventListener("fetch", event => {
-  const requestUrl = new URL(event.request.url);
+  const request = event.request;
 
-  if (event.request.method !== "GET") {
-    return;
-  }
+  if (request.method !== "GET") return;
 
-  // Para archivos principales, intenta red primero.
-  // Así evitamos que script.js/style.css/index.html se queden viejos.
-  if (
-    requestUrl.pathname.endsWith("/") ||
-    requestUrl.pathname.endsWith("/index.html") ||
-    requestUrl.pathname.endsWith("/script.js") ||
-    requestUrl.pathname.endsWith("/style.css") ||
-    requestUrl.pathname.endsWith("/manifest.json")
-  ) {
+  const url = new URL(request.url);
+
+  const isApiRequest =
+    url.hostname.includes("quiniela-api") ||
+    url.pathname.includes("/participants") ||
+    url.pathname.includes("/real-results") ||
+    url.pathname.includes("/admin");
+
+  const isAppShell =
+    request.mode === "navigate" ||
+    request.destination === "document" ||
+    request.destination === "script" ||
+    request.destination === "style";
+
+  if (isApiRequest || isAppShell) {
     event.respondWith(
-      fetch(event.request)
-        .then(response => {
-          const responseClone = response.clone();
-
-          caches.open(CACHE_NAME).then(cache => {
-            cache.put(event.request, responseClone);
-          });
-
-          return response;
-        })
-        .catch(() => caches.match(event.request))
+      fetch(request).catch(() => caches.match(request))
     );
-
     return;
   }
 
-  // Para imágenes/iconos/video, usa cache primero.
-  event.respondWith(
-    caches.match(event.request).then(cachedResponse => {
-      if (cachedResponse) return cachedResponse;
+  if (request.destination === "image") {
+    event.respondWith(
+      caches.open(STATIC_CACHE).then(cache =>
+        cache.match(request).then(cachedResponse => {
+          if (cachedResponse) return cachedResponse;
 
-      return fetch(event.request).then(response => {
-        const responseClone = response.clone();
-
-        caches.open(CACHE_NAME).then(cache => {
-          cache.put(event.request, responseClone);
-        });
-
-        return response;
-      });
-    })
-  );
+          return fetch(request).then(networkResponse => {
+            cache.put(request, networkResponse.clone());
+            return networkResponse;
+          });
+        })
+      )
+    );
+  }
 });
