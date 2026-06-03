@@ -745,11 +745,12 @@ tr:last-child td {
 }
 .tutorial-video {
   width: 100%;
-  max-height: 560px;
+  aspect-ratio: 16/9;
+  height: auto;
+  border: 0;
   border-radius: 18px;
-  border: 1px solid var(--border);
-  background: #000;
   display: block;
+  background: #000;
 }
 .daily-predictions {
   overflow: hidden;
