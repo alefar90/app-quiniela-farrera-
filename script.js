@@ -855,14 +855,14 @@ function HomeTab({ setActiveTab }) {
       { className: "small" },
       "Mira este tutorial rápido antes de registrarte y llenar tus pronósticos."
     ),
-    React.createElement("video", {
-      className: "tutorial-video",
-      controls: true,
-      playsInline: true,
-      preload: "metadata",
-      poster: "icon-512.png",
-      src: "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4"
-    })
+    React.createElement("iframe", {
+  className: "tutorial-video",
+  src: "https://www.youtube.com/embed/oeMZ0dr3uMw",
+  title: "Tutorial Quiniela Farrera Mundial 2026",
+  frameBorder: "0",
+  allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share",
+  allowFullScreen: true
+})
     ), /*#__PURE__*/
 
       React.createElement("div", { className: "card" }, /*#__PURE__*/
