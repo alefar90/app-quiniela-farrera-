@@ -1,4 +1,4 @@
-const CACHE_VERSION = "quiniela-farrera-v1";
+const CACHE_VERSION = "quiniela-farrera-v2";
 const STATIC_CACHE = CACHE_VERSION + "-static";
 
 self.addEventListener("install", event => {
