@@ -54,6 +54,10 @@ const HOST_CITIES = [
 { city: "Houston", country: "Estados Unidos", timeZone: "America/Chicago", stadium: "NRG Stadium" }];
 
 const WORLD_CUP_START_AT = "2026-06-11T15:00:00-04:00";
+
+function hasWorldCupStarted() {
+  return new Date() >= new Date(WORLD_CUP_START_AT);
+}
 const PHONE_COUNTRY_CODES = [
   { label: "🇺🇸/🇨🇦 +1", value: "+1" },
   { label: "🇻🇪 +58", value: "+58" },
@@ -1632,7 +1636,26 @@ React.createElement(
 React.createElement(ExactScoresRankingTable, { leaderboard: leaderboard })));
 
 }
-
+function LockedDailyPredictionsTab() {
+  return /*#__PURE__*/(
+    React.createElement("section", { className: "card" }, /*#__PURE__*/
+      React.createElement("h2", null, "Predicciones diarias bloqueadas"), /*#__PURE__*/
+      React.createElement(
+        "p",
+        { className: "small" },
+        "Esta sección estará disponible cuando empiece el Mundial 2026. Mientras tanto, puedes registrarte, revisar los partidos y llenar tus pronósticos."
+      ), /*#__PURE__*/
+      React.createElement("div", { className: "notice" }, /*#__PURE__*/
+        React.createElement("strong", null, "Disponible al terminar la cuenta regresiva"), /*#__PURE__*/
+        React.createElement(
+          "p",
+          null,
+          "Cuando llegue la fecha de inicio del Mundial, esta pestaña se desbloqueará automáticamente."
+        )
+      )
+    )
+  );
+}
 function DailyPredictionsTab({ participants }) {
   const submittedParticipants = participants.filter(p => p.locked);
 
@@ -2328,7 +2351,13 @@ setParticipants(parsedParticipants);
       currentParticipantId: currentParticipantId }),
 
     activeTab === "Predicciones diarias" && /*#__PURE__*/
-    React.createElement(DailyPredictionsTab, { participants: participants }),
+(
+  hasWorldCupStarted()
+    ? React.createElement(DailyPredictionsTab, {
+        participants: participants
+      })
+    : React.createElement(LockedDailyPredictionsTab, null)
+), /*#__PURE__*/
 
     activeTab === "Ranking" && /*#__PURE__*/
 React.createElement(RankingTab, {
