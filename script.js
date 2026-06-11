@@ -925,6 +925,26 @@ function RegistrationTab({
 {
   const current = participants.find(p => p.id === currentParticipantId);
 const detectedTimeZone = (current === null || current === void 0 ? void 0 : current.timeZone) || getBrowserTimeZone();
+  if (hasWorldCupStarted() && !current) {
+  return /*#__PURE__*/(
+    React.createElement("section", { className: "card" }, /*#__PURE__*/
+      React.createElement("h2", null, "Registro cerrado"), /*#__PURE__*/
+      React.createElement(
+        "p",
+        { className: "small" },
+        "El registro de nuevos participantes cerró al iniciar el Mundial 2026."
+      ), /*#__PURE__*/
+      React.createElement("div", { className: "notice" }, /*#__PURE__*/
+        React.createElement("strong", null, "Gracias por tu interés en la Quiniela Farrera."), /*#__PURE__*/
+        React.createElement(
+          "p",
+          null,
+          "Si ya estabas registrado, puedes seguir revisando tus partidos y pronósticos. Si necesitas ayuda, contacta a Alexander."
+        )
+      )
+    )
+  );
+}
 
 const [form, setForm] = useState({
   name: (current === null || current === void 0 ? void 0 : current.name) || "",
@@ -942,6 +962,11 @@ const [form, setForm] = useState({
 
   function submit(event) {
     event.preventDefault();
+    
+    if (hasWorldCupStarted() && !current) {
+  alert("El registro de nuevos participantes ya está cerrado.");
+  return;
+}
 
     if (!form.name.trim()) {
       alert("El nombre es obligatorio.");
