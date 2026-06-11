@@ -1379,9 +1379,27 @@ function PredictionsTab({ participants, setParticipants, currentParticipantId })
     setParticipants(participants.map(p => p.id === participant.id ? updatedParticipant : p));
   }
 
-  function saveDraft() {
-    saveToStorage(STORAGE_KEYS.participants, participants);
-    alert("Borrador guardado.");
+  async function saveDraft() {
+    const draftParticipant = {
+      ...participant,
+      locked: false,
+      submittedAt: participant.submittedAt || ""
+    };
+  
+    const updatedParticipants = participants.map(p =>
+      p.id === participant.id ? draftParticipant : p
+    );
+  
+    setParticipants(updatedParticipants);
+    saveToStorage(STORAGE_KEYS.participants, updatedParticipants);
+  
+    try {
+      await saveParticipantToAPI(draftParticipant);
+      alert("Borrador guardado correctamente. Puedes volver más tarde para revisarlo y enviarlo definitivamente.");
+    } catch (error) {
+      console.error("Error guardando borrador:", error);
+      alert("Tu borrador se guardó en este dispositivo, pero no se pudo guardar en el servidor. Revisa tu conexión e intenta de nuevo.");
+    }
   }
 
   async function submitPredictions() {
