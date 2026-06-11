@@ -268,9 +268,22 @@ async function saveRealResultsToAPI(realResults) {
     },
     body: JSON.stringify(realResults)
   });
+  
 
   if (!response.ok) {
     throw new Error("No se pudieron guardar los resultados reales");
+  }
+
+  return response.json();
+}
+
+async function loadRealResultsFromAPI() {
+  const response = await fetch(`${API_URL}/real-results?t=${Date.now()}`, {
+    cache: "no-store"
+  });
+
+  if (!response.ok) {
+    throw new Error("No se pudieron cargar los resultados reales.");
   }
 
   return response.json();
@@ -2361,7 +2374,28 @@ setParticipants(parsedParticipants);
   }
 
   loadParticipants();
-}, []);  useEffect(() => saveToStorage(STORAGE_KEYS.realResults, realResults), [realResults]);
+}, []);  
+  
+   useEffect(() => {
+  async function loadRealResults() {
+    try {
+      const apiResults = await loadRealResultsFromAPI();
+
+      setRealResults({
+        ...createEmptyResults(),
+        ...apiResults
+      });
+
+      saveToStorage(STORAGE_KEYS.realResults, apiResults);
+    } catch (error) {
+      console.error("Error cargando resultados reales desde API:", error);
+    }
+  }
+
+  loadRealResults();
+}, []);
+  
+  useEffect(() => saveToStorage(STORAGE_KEYS.realResults, realResults), [realResults]);
   useEffect(() => saveToStorage(STORAGE_KEYS.realGroupStandings, realGroupStandings), [realGroupStandings]);
 
   return /*#__PURE__*/(
